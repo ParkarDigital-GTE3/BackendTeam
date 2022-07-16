@@ -10,25 +10,9 @@ public class ValidationServiceImpl implements ValidationService
 {
 
     @Override
-    public boolean emailValidation(User user)
+    public boolean emailValidation(String email)
     {
         
-        String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
-                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
-        if (user.getEmail()!=null)
-        {
-            if(user.getEmail().matches(regexPattern))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-	@Override
-	public boolean emailValidationForVerification(String email) {
-		// TODO Auto-generated method stub
-
         String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
                 + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
         if (email!=null)
@@ -38,8 +22,9 @@ public class ValidationServiceImpl implements ValidationService
                 return true;
             }
         }
-		return false;
-	}
+        return false;
+    }
+
 
 //    @Override
 //    public boolean accountNumberValidation(Account account)

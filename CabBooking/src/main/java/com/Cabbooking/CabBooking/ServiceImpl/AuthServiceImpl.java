@@ -5,47 +5,99 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.Cabbooking.CabBooking.Model.CabDetails;
+import com.Cabbooking.CabBooking.Model.CabDriver;
+import com.Cabbooking.CabBooking.Model.Customer;
 import com.Cabbooking.CabBooking.Model.User;
+import com.Cabbooking.CabBooking.Repository.CabRepository;
+import com.Cabbooking.CabBooking.Repository.CustomerRepository;
+import com.Cabbooking.CabBooking.Repository.DriverRepository;
 import com.Cabbooking.CabBooking.Repository.UserRepository;
 import com.Cabbooking.CabBooking.Service.AuthService;
+import com.mysql.cj.jdbc.Driver;
 
 @Service
 public class AuthServiceImpl implements AuthService {
-    @Autowired
-    UserRepository userRepository;
 
-//    @Autowired
-//    AccountRepository accountRepository;
-//
-//    @Autowired
-//    AccountController accountController;
+    
+    @Autowired
+    CustomerRepository customerRepository;
+    
+    @Autowired
+    DriverRepository driverRepository;
+
+    @Autowired
+    CabRepository cabRepository;
 
     @Autowired
     PasswordEncoder encoder;
 
+    //Creating  entities
+    
+    //creating customer
     @Override
-    public User createUser(User userDetails) {
+    public Customer createCustomer(Customer customer) {
         // TODO Auto-generated method stub
-
-    	userDetails.setPassword(encoder.encode(userDetails.getPassword()));
-
-        return userRepository.save(userDetails);
+    	customer.setPassword(encoder.encode(customer.getPassword()));
+        return  customerRepository.save(customer);
     }
 
-
+    //creating driver
     @Override
-    public User fetchUserByEmail(String emailId) {
+    public CabDriver createDriver(CabDriver driver) {
         // TODO Auto-generated method stub
-        return userRepository.fetchUserByEmail(emailId);
+    	driver.setPassword(encoder.encode(driver.getPassword()));
+        return  driverRepository.save(driver);
     }
 
-//    @Override
-//    public void updatePassword(String emailId, String password) {
-//
-//        User user = userRepository.fetchUserByEmail(emailId);
-//        user.setPassword(encoder.encode(password));
-//        userRepository.save(user);
-//
-//    }
+    //creating cab
+	@Override
+	public CabDetails createCab(CabDetails cabDetails) {
+        return cabRepository.save(cabDetails);
+	}
+	
+	//Fetching the details
+	
+	//fetching customer
+    @Override
+    public Customer fetchCustomerByEmail(String emailId) {
+        // TODO Auto-generated method stub
+        return customerRepository.fetchCustomerByEmail(emailId);
+    }
+
+    //fetching customer
+    @Override
+    public CabDriver fetchDriverByEmail(String emailId) {
+        // TODO Auto-generated method stub
+        return driverRepository.fetchDriverByEmail(emailId);
+    }
+
+    //fetching customer
+	@Override
+	public CabDetails fetchCabByRegistrationNo(String cabRegistrationNo) {
+		
+        return cabRepository.fetchCabByRegistrationNo(cabRegistrationNo);
+		// TODO Auto-generated method stub
+
+	}
+
+
+	//Updating Password
+	//updating customer password
+	@Override
+	public void updateCustomerPassword(String emailId, String newPassword) {
+		Customer cust = customerRepository.fetchCustomerByEmail(emailId);
+		cust.setPassword(encoder.encode(newPassword));
+		customerRepository.save(cust);		
+	}
+
+	//updating driver password
+	@Override
+	public void updateDriverPassword(String emailId, String newPassword) {
+		CabDriver driver  = driverRepository.fetchDriverByEmail(emailId);
+		driver.setPassword(encoder.encode(newPassword));
+		driverRepository.save(driver);
+	}
+
 
 }

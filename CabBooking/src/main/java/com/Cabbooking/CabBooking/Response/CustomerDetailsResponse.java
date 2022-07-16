@@ -2,15 +2,22 @@ package com.Cabbooking.CabBooking.Response;
 
 import java.util.Date;
 
-public class UserResponseForNoUser {
+import com.Cabbooking.CabBooking.Model.Customer;
+
+
+
+
+public class CustomerDetailsResponse {
     private Date timestamp;
     private String message;
     private String status;
+    private Customer result;
 
-    public UserResponseForNoUser(Date timestamp, String message, String status) {
+    public CustomerDetailsResponse(Date timestamp, String message, String status, Customer result) {
         this.timestamp = timestamp;
         this.message = message;
         this.status = status;
+        this.result = result;
     }
 
     public Date getTimestamp() {
@@ -35,6 +42,14 @@ public class UserResponseForNoUser {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Customer getResult() {
+        return result;
+    }
+
+    public void setResult(Customer result) {
+        this.result = result;
     }
 
 }

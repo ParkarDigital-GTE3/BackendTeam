@@ -5,15 +5,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.Cabbooking.CabBooking.Model.CabDetails;
-import com.Cabbooking.CabBooking.Model.CabDriver;
-import com.Cabbooking.CabBooking.Model.User;
 
 @Repository
-public interface DriverRepository extends JpaRepository<CabDriver, Long>{
+public interface CabRepository extends JpaRepository<CabDetails, Long>{
 
-
-    @Query("SELECT a FROM CabDriver a WHERE a.email=?1")
-    CabDriver fetchDriverByEmail(String email);
+    @Query("SELECT a FROM CabDetails a WHERE a.cabRegistrationNo=?1")
+    CabDetails fetchCabByRegistrationNo(String cabRegistrationNo);
 
 
 }
