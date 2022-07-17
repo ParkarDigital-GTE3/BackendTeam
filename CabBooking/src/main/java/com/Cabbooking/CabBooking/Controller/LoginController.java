@@ -60,6 +60,7 @@ public class LoginController {
     @Autowired
     JwtUtils jwtUtils;
 	
+    //Customer Login
 	@PostMapping("/customerLogin")
 	public ResponseEntity<Object> customerLogin(@RequestBody Customer customerDetails){
 		
@@ -97,6 +98,7 @@ public class LoginController {
 	        }
 	    }
 	
+	//Cab Driver Login
 	@PostMapping("/driverLogin")
 	public ResponseEntity<Object> driverLogin(@RequestBody CabDriver cabDriverDetails){
 		

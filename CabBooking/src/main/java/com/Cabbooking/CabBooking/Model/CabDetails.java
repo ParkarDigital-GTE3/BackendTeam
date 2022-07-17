@@ -1,9 +1,11 @@
 package com.Cabbooking.CabBooking.Model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,6 +19,8 @@ public class CabDetails {
     private String cabType;
     private String cabCapacity;
     private String cabInsuranceNo;
+    @OneToOne(fetch = FetchType.EAGER)
+    private CabDriver driver;
 	public long getId() {
 		return id;
 	}
@@ -53,14 +57,21 @@ public class CabDetails {
 	public void setCabInsuranceNo(String cabInsuranceNo) {
 		this.cabInsuranceNo = cabInsuranceNo;
 	}
+	public CabDriver getDriver() {
+		return driver;
+	}
+	public void setDriver(CabDriver driver) {
+		this.driver = driver;
+	}
 	public CabDetails(long id, String licenseNo, String cabRegistrationNo, String cabType, String cabCapacity,
-			String cabInsuranceNo) {
+			String cabInsuranceNo, CabDriver driver) {
 		this.id = id;
 		this.licenseNo = licenseNo;
 		this.cabRegistrationNo = cabRegistrationNo;
 		this.cabType = cabType;
 		this.cabCapacity = cabCapacity;
 		this.cabInsuranceNo = cabInsuranceNo;
+		this.driver = driver;
 	}
 	public CabDetails() {
 		// TODO Auto-generated constructor stub
@@ -68,8 +79,10 @@ public class CabDetails {
 	@Override
 	public String toString() {
 		return "CabDetails [id=" + id + ", licenseNo=" + licenseNo + ", cabRegistrationNo=" + cabRegistrationNo
-				+ ", cabType=" + cabType + ", cabCapacity=" + cabCapacity + ", cabInsuranceNo=" + cabInsuranceNo + "]";
+				+ ", cabType=" + cabType + ", cabCapacity=" + cabCapacity + ", cabInsuranceNo=" + cabInsuranceNo
+				+ ", driver=" + driver + "]";
 	}
+	
     
     
 

@@ -1,6 +1,7 @@
 package com.Cabbooking.CabBooking.Controller;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpSession;
@@ -80,7 +81,7 @@ public class AuthController
 	@Autowired
 	PasswordEncoder encoder;
 	
-	
+	// Email OTP Verification
 	@PostMapping("/sendEmailOtp")
 	public ResponseEntity<?> sendEmailOtp(@RequestBody EmailOtpRequest emailOtpRequest,HttpSession session)
 	{
@@ -128,6 +129,7 @@ public class AuthController
 	return ResponseEntity.ok("Check your Email Id.. Email Not Sent!!!..");
 	}
 
+	//Create Customer
     @PostMapping("/registerCustomer")
 	public ResponseEntity<Object> createUser(@RequestBody Customer customerDetails){
 		Customer fetchCustomer = authService.fetchCustomerByEmail(customerDetails.getEmail());
@@ -138,21 +140,22 @@ public class AuthController
 
 				CustomerDetailsResponse response = new CustomerDetailsResponse(new Date(), "Customer Created Succesfully", "200", customer);
 
-				return new ResponseEntity<Object>(response, HttpStatus.OK);
+				return new ResponseEntity<Object>(response, HttpStatus.CREATED);
 			}
 			else
 			{
 				UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"Invalid Email id","409");
-				return new ResponseEntity<Object>(response,HttpStatus.OK);
+				return new ResponseEntity<Object>(response,HttpStatus.CONFLICT);
 			}
 
 		}else{
 
 			UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"Email id already exists","409");
-			return new ResponseEntity<Object>(response,HttpStatus.OK);
+			return new ResponseEntity<Object>(response,HttpStatus.CONFLICT);
 		}
     }
     
+    //Create  Cab Driver
     @PostMapping("/registerDriver")
 	public ResponseEntity<Object> createDriver(@RequestBody CabDriver driverDetials)
     	{
@@ -162,25 +165,55 @@ public class AuthController
 			if (validationService.emailValidation(driverDetials.getEmail())) {
 				CabDriver driver = authService.createDriver(driverDetials);
 
-				DriverDetailsResponse response = new DriverDetailsResponse(new Date(), "Driver Created Succesfully", "200", driver);
+				DriverDetailsResponse response = new DriverDetailsResponse(new Date(), "Driver Created Succesfully", "201", driver);
 
-				return new ResponseEntity<Object>(response, HttpStatus.OK);
+				return new ResponseEntity<Object>(response, HttpStatus.CREATED);
 			}
 			else
 			{
 				UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"Invalid Email id","409");
-				return new ResponseEntity<Object>(response,HttpStatus.OK);
+				return new ResponseEntity<Object>(response,HttpStatus.CONFLICT);
 			}
 
 		}else {
 
 			UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"Email id already exists","409");
-			return new ResponseEntity<Object>(response,HttpStatus.OK);
+			return new ResponseEntity<Object>(response,HttpStatus.CONFLICT);
 
 		}
     }
 
-
+    
+    // Fetch All Customer
+ 	@GetMapping("/getCustomers")
+ 	public ResponseEntity<Object> getCustomers()
+ 		{
+ 			List<Customer> fetchCustomer = customerRepository.findAll();
+ 			if (fetchCustomer == null)
+ 			{
+ 				CustomResponseForNoUser response = new CustomResponseForNoUser(new Date(),"Error in authentication","409");
+ 				return new ResponseEntity<Object>(response,HttpStatus.OK);
+ 			}
+ 		
+ 			return new ResponseEntity<Object>(fetchCustomer,HttpStatus.OK);
+ 		}
+ 	
+    // Fetch  All Driver
+ 	@GetMapping("/getCabDrivers")
+ 	public ResponseEntity<Object> getCabDrivers()
+ 		{
+ 			List<CabDriver> fetchDriver = driverRepository.findAll();
+ 			if (fetchDriver == null)
+ 			{
+ 				CustomResponseForNoUser response = new CustomResponseForNoUser(new Date(),"Error in authentication","409");
+ 				return new ResponseEntity<Object>(response,HttpStatus.CONFLICT);
+ 			}
+ 		
+ 			return new ResponseEntity<Object>(fetchDriver,HttpStatus.FOUND);
+ 		}
+ 	
+ 	
+    // Fetch Customer By Email
 	@GetMapping("/getCustomer/{email}")
 	public ResponseEntity<Object> getCustomer(@PathVariable("email") String email)
 		{
@@ -194,7 +227,8 @@ public class AuthController
 		
 			return new ResponseEntity<Object>(fetchCustomer,HttpStatus.OK);
 		}
-	 	
+	
+    // Fetch Driver By Email
 	@GetMapping("/getDriver/{email}")
 	public ResponseEntity<Object> getDriver(@PathVariable("email") String email)
 		{
@@ -210,6 +244,7 @@ public class AuthController
 		}
 	
 	
+	//Update Customer Password
 	@PostMapping("/updateCustomerPassword")
 	public String updateCustomerPassword(@RequestBody UpdatePasswordRequest Details)
 		{
@@ -231,6 +266,7 @@ public class AuthController
 
 		}
 	
+	//Update Driver Password
 	@PostMapping("/updateDriverPassword")
 	public String updateDriverPassword(@RequestBody UpdatePasswordRequest Details)
 		{
@@ -250,7 +286,6 @@ public class AuthController
 		}
 
 	
-
    
 }
 

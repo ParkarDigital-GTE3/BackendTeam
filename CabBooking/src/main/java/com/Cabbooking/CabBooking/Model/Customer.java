@@ -14,22 +14,12 @@ public class Customer {
     private String role;
     private String email;
     private String contactNo;
-   
+    private String name;
     private String dateOfBirth;
     private String gender;
     private String password;
 	public Customer() {
 		// TODO Auto-generated constructor stub
-	}
-	public Customer(long id, String role, String email, String contactNo, String dateOfBirth, String gender,
-			String password) {
-		this.id = id;
-		this.role = role;
-		this.email = email;
-		this.contactNo = contactNo;
-		this.dateOfBirth = dateOfBirth;
-		this.gender = gender;
-		this.password = password;
 	}
 	public long getId() {
 		return id;
@@ -55,6 +45,12 @@ public class Customer {
 	public void setContactNo(String contactNo) {
 		this.contactNo = contactNo;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public String getDateOfBirth() {
 		return dateOfBirth;
 	}
@@ -73,16 +69,21 @@ public class Customer {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public Customer(long id, String role, String email, String contactNo, String name, String dateOfBirth,
+			String gender, String password) {
+		this.id = id;
+		this.role = role;
+		this.email = email;
+		this.contactNo = contactNo;
+		this.name = name;
+		this.dateOfBirth = dateOfBirth;
+		this.gender = gender;
+		this.password = password;
+	}
 	@Override
 	public String toString() {
-		return "Customer [id=" + id + ", role=" + role + ", email=" + email + ", contactNo=" + contactNo
-				+ ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", password=" + password + "]";
+		return "Customer [id=" + id + ", role=" + role + ", email=" + email + ", contactNo=" + contactNo + ", name="
+				+ name + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", password=" + password + "]";
 	}
-	
-    
-    
-	
-	
-    
 	
 }

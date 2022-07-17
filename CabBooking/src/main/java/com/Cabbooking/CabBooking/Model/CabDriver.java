@@ -14,19 +14,20 @@ public class CabDriver {
     private String role;
     private String email;
     private String contactNumber;
-   
+    private String name;
     private String dateOfBirth;
     private String gender;
     private String password;
 	public CabDriver() {
 		// TODO Auto-generated constructor stub
 	}
-	public CabDriver(long id, String role, String email, String contactNumber, String dateOfBirth, String gender,
-			String password) {
+	public CabDriver(long id, String role, String email, String contactNumber, String name, String dateOfBirth,
+			String gender, String password) {
 		this.id = id;
 		this.role = role;
 		this.email = email;
 		this.contactNumber = contactNumber;
+		this.name = name;
 		this.dateOfBirth = dateOfBirth;
 		this.gender = gender;
 		this.password = password;
@@ -55,6 +56,12 @@ public class CabDriver {
 	public void setContactNumber(String contactNumber) {
 		this.contactNumber = contactNumber;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public String getDateOfBirth() {
 		return dateOfBirth;
 	}
@@ -73,15 +80,12 @@ public class CabDriver {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
 	@Override
 	public String toString() {
-		return "Driver [id=" + id + ", role=" + role + ", email=" + email + ", contactNumber=" + contactNumber
-				+ ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", password=" + password + "]";
+		return "CabDriver [id=" + id + ", role=" + role + ", email=" + email + ", contactNumber=" + contactNumber
+				+ ", name=" + name + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", password=" + password
+				+ "]";
 	}
-
 	
-	
-    
 	
 }
