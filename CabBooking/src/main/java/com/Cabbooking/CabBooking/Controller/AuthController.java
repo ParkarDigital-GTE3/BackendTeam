@@ -68,9 +68,7 @@ public class AuthController
 
     @Autowired
     JwtUtils jwtUtils;
-//
-//	@Autowired
-//	AccountService accountService;
+
 
 	@Autowired
 	AuthService authService;
