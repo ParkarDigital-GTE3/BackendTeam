@@ -27,7 +27,7 @@ public class Booking {
 	private String cabCapacity;
 	private String customerName;
 	private String custContactNo;
-	@ColumnDefault("open")
+	@ColumnDefault("0")
 	private String status;
 	public long getBooking_id() {
 		return booking_id;

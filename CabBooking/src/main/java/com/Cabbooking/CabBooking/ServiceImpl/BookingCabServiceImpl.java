@@ -24,7 +24,7 @@ public class BookingCabServiceImpl implements BookingCabService {
 	@Override
 	public Booking updateBooking(long id) {
 		Booking booking = bookingRepository.getById(id);
-		booking.setStatus("closed");
+		booking.setStatus("1");
 		return	bookingRepository.save(booking);
 
 	}

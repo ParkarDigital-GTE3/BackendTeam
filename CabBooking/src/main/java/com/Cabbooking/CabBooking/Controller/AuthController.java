@@ -207,7 +207,7 @@ public class AuthController
  				return new ResponseEntity<Object>(response,HttpStatus.CONFLICT);
  			}
  		
- 			return new ResponseEntity<Object>(fetchDriver,HttpStatus.FOUND);
+ 			return new ResponseEntity<Object>(fetchDriver,HttpStatus.OK);
  		}
  	
  	

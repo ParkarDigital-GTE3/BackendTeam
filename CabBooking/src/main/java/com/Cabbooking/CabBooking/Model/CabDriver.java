@@ -5,6 +5,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 @Entity
 public class CabDriver {
 	
@@ -18,19 +21,10 @@ public class CabDriver {
     private String dateOfBirth;
     private String gender;
     private String password;
+    @ColumnDefault("0")
+    private String activationStatus;
 	public CabDriver() {
 		// TODO Auto-generated constructor stub
-	}
-	public CabDriver(long id, String role, String email, String contactNumber, String name, String dateOfBirth,
-			String gender, String password) {
-		this.id = id;
-		this.role = role;
-		this.email = email;
-		this.contactNumber = contactNumber;
-		this.name = name;
-		this.dateOfBirth = dateOfBirth;
-		this.gender = gender;
-		this.password = password;
 	}
 	public long getId() {
 		return id;
@@ -80,12 +74,32 @@ public class CabDriver {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public String getActivationStatus() {
+		return activationStatus;
+	}
+	public void setActivationStatus(String activationStatus) {
+		this.activationStatus = activationStatus;
+	}
+	public CabDriver(long id, String role, String email, String contactNumber, String name, String dateOfBirth,
+			String gender, String password, String activationStatus) {
+		this.id = id;
+		this.role = role;
+		this.email = email;
+		this.contactNumber = contactNumber;
+		this.name = name;
+		this.dateOfBirth = dateOfBirth;
+		this.gender = gender;
+		this.password = password;
+		this.activationStatus = activationStatus;
+	}
 	@Override
 	public String toString() {
 		return "CabDriver [id=" + id + ", role=" + role + ", email=" + email + ", contactNumber=" + contactNumber
 				+ ", name=" + name + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", password=" + password
-				+ "]";
+				+ ", activationStatus=" + activationStatus + "]";
 	}
+	
+	
 	
 	
 }

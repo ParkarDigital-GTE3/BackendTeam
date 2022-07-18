@@ -61,7 +61,7 @@ public class BookCabController {
 	
 	
 	//update booking status as closed
-	@PatchMapping("/updateBooking/{id}")
+	@PatchMapping("/acceptBooking/{id}")
 	public ResponseEntity<Object> updateBookingStatus(@PathVariable("id") long id){
 		Booking fetchBooking = bookingRepository.getById(id);
 		
@@ -72,6 +72,7 @@ public class BookCabController {
 		Booking response = bookingCabService.updateBooking(id);
 		return new ResponseEntity<Object>(response,HttpStatus.ACCEPTED);
 	}
+	
 	
 	
 }

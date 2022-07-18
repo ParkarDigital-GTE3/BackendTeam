@@ -20,7 +20,7 @@ public class CabDetails {
     private String cabCapacity;
     private String cabInsuranceNo;
     @OneToOne(fetch = FetchType.EAGER)
-    private CabDriver driver;
+    private CabDriver driver_id;
 	public long getId() {
 		return id;
 	}
@@ -57,32 +57,33 @@ public class CabDetails {
 	public void setCabInsuranceNo(String cabInsuranceNo) {
 		this.cabInsuranceNo = cabInsuranceNo;
 	}
-	public CabDriver getDriver() {
-		return driver;
+	public CabDriver getDriver_id() {
+		return driver_id;
 	}
-	public void setDriver(CabDriver driver) {
-		this.driver = driver;
+	public void setDriver_id(CabDriver driver_id) {
+		this.driver_id = driver_id;
+	}
+	@Override
+	public String toString() {
+		return "CabDetails [id=" + id + ", licenseNo=" + licenseNo + ", cabRegistrationNo=" + cabRegistrationNo
+				+ ", cabType=" + cabType + ", cabCapacity=" + cabCapacity + ", cabInsuranceNo=" + cabInsuranceNo
+				+ ", driver_id=" + driver_id + "]";
 	}
 	public CabDetails(long id, String licenseNo, String cabRegistrationNo, String cabType, String cabCapacity,
-			String cabInsuranceNo, CabDriver driver) {
+			String cabInsuranceNo, CabDriver driver_id) {
 		this.id = id;
 		this.licenseNo = licenseNo;
 		this.cabRegistrationNo = cabRegistrationNo;
 		this.cabType = cabType;
 		this.cabCapacity = cabCapacity;
 		this.cabInsuranceNo = cabInsuranceNo;
-		this.driver = driver;
+		this.driver_id = driver_id;
 	}
 	public CabDetails() {
 		// TODO Auto-generated constructor stub
 	}
-	@Override
-	public String toString() {
-		return "CabDetails [id=" + id + ", licenseNo=" + licenseNo + ", cabRegistrationNo=" + cabRegistrationNo
-				+ ", cabType=" + cabType + ", cabCapacity=" + cabCapacity + ", cabInsuranceNo=" + cabInsuranceNo
-				+ ", driver=" + driver + "]";
-	}
 	
+    
     
     
 
