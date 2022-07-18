@@ -3,7 +3,7 @@ package com.Cabbooking.CabBooking.Response;
 import java.util.Date;
 
 import com.Cabbooking.CabBooking.Model.CabDetails;
-import com.Cabbooking.CabBooking.Model.User;
+
 
 public class CabDetailsResponse {
 	 private Date timestamp;

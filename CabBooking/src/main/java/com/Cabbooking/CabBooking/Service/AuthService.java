@@ -31,4 +31,6 @@ public interface AuthService {
 
 	void updateDriverPassword(String emailId, String newPassword);
 
+	CabDriver fetchDriverById(long driver_id);
+
 }

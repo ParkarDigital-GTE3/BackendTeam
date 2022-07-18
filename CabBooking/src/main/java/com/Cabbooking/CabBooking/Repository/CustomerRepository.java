@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.Cabbooking.CabBooking.Model.Customer;
-import com.Cabbooking.CabBooking.Model.User;
+
 
 
 

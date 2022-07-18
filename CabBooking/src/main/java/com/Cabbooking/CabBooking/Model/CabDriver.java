@@ -1,9 +1,12 @@
 package com.Cabbooking.CabBooking.Model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.boot.context.properties.bind.DefaultValue;
@@ -13,7 +16,7 @@ public class CabDriver {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long driver_id;
     private String role;
     private String email;
     private String contactNumber;
@@ -21,16 +24,19 @@ public class CabDriver {
     private String dateOfBirth;
     private String gender;
     private String password;
-    @ColumnDefault("0")
     private String activationStatus;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "cab_id")
+    private CabDetails cab_id;
 	public CabDriver() {
 		// TODO Auto-generated constructor stub
 	}
-	public long getId() {
-		return id;
+	public long getDriver_id() {
+		return driver_id;
 	}
-	public void setId(long id) {
-		this.id = id;
+	public void setDriver_id(long driver_id) {
+		this.driver_id = driver_id;
 	}
 	public String getRole() {
 		return role;
@@ -80,9 +86,15 @@ public class CabDriver {
 	public void setActivationStatus(String activationStatus) {
 		this.activationStatus = activationStatus;
 	}
-	public CabDriver(long id, String role, String email, String contactNumber, String name, String dateOfBirth,
-			String gender, String password, String activationStatus) {
-		this.id = id;
+	public CabDetails getCab_id() {
+		return cab_id;
+	}
+	public void setCab_id(CabDetails cab_id) {
+		this.cab_id = cab_id;
+	}
+	public CabDriver(long driver_id, String role, String email, String contactNumber, String name, String dateOfBirth,
+			String gender, String password, String activationStatus, CabDetails cab_id) {
+		this.driver_id = driver_id;
 		this.role = role;
 		this.email = email;
 		this.contactNumber = contactNumber;
@@ -91,15 +103,14 @@ public class CabDriver {
 		this.gender = gender;
 		this.password = password;
 		this.activationStatus = activationStatus;
+		this.cab_id = cab_id;
 	}
 	@Override
 	public String toString() {
-		return "CabDriver [id=" + id + ", role=" + role + ", email=" + email + ", contactNumber=" + contactNumber
-				+ ", name=" + name + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", password=" + password
-				+ ", activationStatus=" + activationStatus + "]";
+		return "CabDriver [driver_id=" + driver_id + ", role=" + role + ", email=" + email + ", contactNumber="
+				+ contactNumber + ", name=" + name + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender
+				+ ", password=" + password + ", activationStatus=" + activationStatus + ", cab_id=" + cab_id + "]";
 	}
-	
-	
 	
 	
 }

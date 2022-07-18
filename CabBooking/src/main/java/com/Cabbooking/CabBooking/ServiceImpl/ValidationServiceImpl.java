@@ -1,7 +1,7 @@
 package com.Cabbooking.CabBooking.ServiceImpl;
 import org.springframework.stereotype.Service;
 
-import com.Cabbooking.CabBooking.Model.User;
+
 import com.Cabbooking.CabBooking.Service.ValidationService;
 
 import java.util.regex.Pattern;

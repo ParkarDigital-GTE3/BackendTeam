@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.Cabbooking.CabBooking.Model.CabDriver;
 import com.Cabbooking.CabBooking.Model.Customer;
-import com.Cabbooking.CabBooking.Model.User;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -93,7 +93,7 @@ public static UserDetailsImpl buildDriver(CabDriver driver){
     authorities.add(new SimpleGrantedAuthority("user_role"));
     log.info("Authorities-----"+authorities);
     log.info(" Before build of UserDetailsImpl");
-    return new UserDetailsImpl(driver.getId(),driver.getRole(),driver.getEmail(),driver.getPassword(),authorities);
+    return new UserDetailsImpl(driver.getDriver_id(),driver.getRole(),driver.getEmail(),driver.getPassword(),authorities);
 }
 
 public static UserDetailsImpl build(Customer customer){

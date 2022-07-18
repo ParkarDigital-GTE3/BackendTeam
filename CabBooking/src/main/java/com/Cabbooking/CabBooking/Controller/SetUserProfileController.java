@@ -115,7 +115,9 @@ public class SetUserProfileController {
 	public ResponseEntity<Object> setCabDetails(@RequestBody CabDetails cabDetails)
 	{
 		CabDetails fetchCab = authService.fetchCabByRegistrationNo(cabDetails.getCabRegistrationNo());
+		CabDriver driver = authService.fetchDriverById(cabDetails.getDriver_id().getDriver_id());
 		if(fetchCab == null) {
+			cabDetails.setDriver_id(driver);
 			CabDetails cab = authService.createCab(cabDetails);
 
 			CabDetailsResponse response = new CabDetailsResponse(new Date(), "Cab Created Succesfully", "200", cab);

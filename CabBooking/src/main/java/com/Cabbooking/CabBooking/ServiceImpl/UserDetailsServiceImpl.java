@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.Cabbooking.CabBooking.Model.CabDriver;
 import com.Cabbooking.CabBooking.Model.Customer;
-import com.Cabbooking.CabBooking.Model.User;
+
 import com.Cabbooking.CabBooking.Repository.CustomerRepository;
 import com.Cabbooking.CabBooking.Repository.DriverRepository;
-import com.Cabbooking.CabBooking.Repository.UserRepository;
+
 import com.Cabbooking.CabBooking.Security.UserDetailsImpl;
 
 

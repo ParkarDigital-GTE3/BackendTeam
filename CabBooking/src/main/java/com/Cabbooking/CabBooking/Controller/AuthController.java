@@ -26,7 +26,7 @@ import com.Cabbooking.CabBooking.Model.Customer;
 import com.Cabbooking.CabBooking.Model.User;
 import com.Cabbooking.CabBooking.Repository.CustomerRepository;
 import com.Cabbooking.CabBooking.Repository.DriverRepository;
-import com.Cabbooking.CabBooking.Repository.UserRepository;
+
 import com.Cabbooking.CabBooking.Request.EmailOtpRequest;
 import com.Cabbooking.CabBooking.Request.UpdatePasswordRequest;
 import com.Cabbooking.CabBooking.Request.UpdateUserRequest;
@@ -54,8 +54,8 @@ public class AuthController
 	@Autowired
 	EmailOtpRequest emailOtpRequest;
 	
-	@Autowired
-	UserRepository userRepository;
+//	@Autowired
+//	UserRepository userRepository;
 
 	@Autowired
 	CustomerRepository customerRepository;
@@ -161,6 +161,8 @@ public class AuthController
 
 		if(fetchDriver == null) {
 			if (validationService.emailValidation(driverDetials.getEmail())) {
+				driverDetials.setActivationStatus("0");
+				driverDetials.setCab_id(null);
 				CabDriver driver = authService.createDriver(driverDetials);
 
 				DriverDetailsResponse response = new DriverDetailsResponse(new Date(), "Driver Created Succesfully", "201", driver);

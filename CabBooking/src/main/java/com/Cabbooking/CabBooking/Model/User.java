@@ -2,7 +2,9 @@ package com.Cabbooking.CabBooking.Model;
 
 import javax.persistence.*;
 
-@Entity
+import org.springframework.stereotype.Component;
+
+@Component
 public class User {
 	
     @Id

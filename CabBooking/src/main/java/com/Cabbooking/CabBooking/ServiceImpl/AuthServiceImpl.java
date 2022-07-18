@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import com.Cabbooking.CabBooking.Model.CabDetails;
 import com.Cabbooking.CabBooking.Model.CabDriver;
 import com.Cabbooking.CabBooking.Model.Customer;
-import com.Cabbooking.CabBooking.Model.User;
+
 import com.Cabbooking.CabBooking.Repository.CabRepository;
 import com.Cabbooking.CabBooking.Repository.CustomerRepository;
 import com.Cabbooking.CabBooking.Repository.DriverRepository;
-import com.Cabbooking.CabBooking.Repository.UserRepository;
+
 import com.Cabbooking.CabBooking.Service.AuthService;
 import com.mysql.cj.jdbc.Driver;
 
@@ -97,6 +97,12 @@ public class AuthServiceImpl implements AuthService {
 		CabDriver driver  = driverRepository.fetchDriverByEmail(emailId);
 		driver.setPassword(encoder.encode(newPassword));
 		driverRepository.save(driver);
+	}
+
+	@Override
+	public CabDriver fetchDriverById(long driver_id) {
+		// TODO Auto-generated method stub
+		return driverRepository.fetchDriverById(driver_id);
 	}
 
 
