@@ -118,7 +118,7 @@ public class SetUserProfileController {
 		CabDriver driver = authService.fetchDriverById(cabDetails.getDriver_id().getDriver_id());
 		if(fetchCab == null) {
 			cabDetails.setDriver_id(driver);
-			CabDetails cab = authService.createCab(cabDetails);
+			CabDetails cab = authService.createCab(cabDetails,driver);
 
 			CabDetailsResponse response = new CabDetailsResponse(new Date(), "Cab Created Succesfully", "200", cab);
 

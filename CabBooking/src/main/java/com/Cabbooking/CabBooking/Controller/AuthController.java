@@ -84,7 +84,7 @@ public class AuthController
 	public ResponseEntity<?> sendEmailOtp(@RequestBody EmailOtpRequest emailOtpRequest,HttpSession session)
 	{
 		if(validationService.emailValidation(emailOtpRequest.getEmail())) {
-			if(emailOtpRequest.getRole()=="Customer") {
+			if((emailOtpRequest.getRole()).equals("Customer")) {
 				Customer fetchCustomer = authService.fetchCustomerByEmail(emailOtpRequest.getEmail());
 			if(fetchCustomer != null) {
 				return ResponseEntity.ok("EmailId Already Exists!!!");
@@ -103,7 +103,7 @@ public class AuthController
 			}
 			}
 			}
-			else if(emailOtpRequest.getRole()=="Driver") {
+			else if((emailOtpRequest.getRole()).equals("Driver")) {
 				CabDriver fetchDriver = authService.fetchDriverByEmail(emailOtpRequest.getEmail());
 				if(fetchDriver != null) {
 					return ResponseEntity.ok("EmailId Already Exists!!!");

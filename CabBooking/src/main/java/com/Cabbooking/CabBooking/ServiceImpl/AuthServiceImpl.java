@@ -52,8 +52,11 @@ public class AuthServiceImpl implements AuthService {
 
     //creating cab
 	@Override
-	public CabDetails createCab(CabDetails cabDetails) {
-        return cabRepository.save(cabDetails);
+	public CabDetails createCab(CabDetails cabDetails,CabDriver cabDriver) {
+		CabDetails cab = cabRepository.save(cabDetails);
+		cabDriver.setCab_id(cab);
+		driverRepository.save(cabDriver);
+		return cab;
 	}
 	
 	//Fetching the details
@@ -104,6 +107,7 @@ public class AuthServiceImpl implements AuthService {
 		// TODO Auto-generated method stub
 		return driverRepository.fetchDriverById(driver_id);
 	}
+
 
 
 }

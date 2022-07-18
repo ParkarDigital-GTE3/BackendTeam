@@ -32,7 +32,7 @@ public class BookCabController {
 	@Autowired
 	BookingRepository bookingRepository;
 	
-	// Create Booking
+	// Create Booking Customer
 	@PostMapping("/bookCab")
 	public ResponseEntity<Object> bookCab(@RequestBody Booking bookingDetails){
 		
@@ -45,7 +45,7 @@ public class BookCabController {
 		return new ResponseEntity<Object>(response,HttpStatus.CREATED);
 	}
 
-	//Get Bookings
+	//Get Bookings Driver
 	@GetMapping("/getBookings")
 	public ResponseEntity<Object> getBookings(){
 		List<Booking> response = bookingRepository.findAll();
