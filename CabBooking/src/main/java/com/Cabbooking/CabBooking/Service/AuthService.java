@@ -14,7 +14,7 @@ public interface AuthService {
 	 
 	CabDriver createDriver(CabDriver driver);
 	 
-	//CabDetails createCab(CabDetails cabDetails);
+	CabDetails createCab(CabDetails cabDetails);
 	 
 	Customer fetchCustomerByEmail(String emailId);
 
@@ -33,6 +33,6 @@ public interface AuthService {
 
 	CabDriver fetchDriverById(long driver_id);
 
-	CabDetails createCab(CabDetails cabDetails, CabDriver cabDriver);
+	//CabDetails createCab(CabDetails cabDetails, CabDriver cabDriver);
 
 }

@@ -15,19 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.Cabbooking.CabBooking.Model.CabDetails;
 import com.Cabbooking.CabBooking.Model.CabDriver;
-import com.Cabbooking.CabBooking.Model.Customer;
 import com.Cabbooking.CabBooking.Repository.CabRepository;
 import com.Cabbooking.CabBooking.Repository.CustomerRepository;
 import com.Cabbooking.CabBooking.Repository.DriverRepository;
 import com.Cabbooking.CabBooking.Request.UpdateCabRequest;
-import com.Cabbooking.CabBooking.Request.UpdateUserRequest;
 import com.Cabbooking.CabBooking.Response.CabDetailsResponse;
+import com.Cabbooking.CabBooking.Response.CustomCabResponse;
 import com.Cabbooking.CabBooking.Response.CustomResponseForNoUser;
-import com.Cabbooking.CabBooking.Response.CustomerResponseForInvalidLogin;
 import com.Cabbooking.CabBooking.Response.UserResponseForNoUser;
 import com.Cabbooking.CabBooking.Service.AuthService;
 
-@RequestMapping("/login")
+@RequestMapping("/login/Cabs")
 @RestController
 public class SetUserProfileController {
 	
@@ -36,7 +34,6 @@ public class SetUserProfileController {
 	
 	@Autowired
 	PasswordEncoder encoder;
-	
 	
 	@Autowired
 	CabRepository cabRepository;
@@ -48,66 +45,6 @@ public class SetUserProfileController {
 	DriverRepository driverRepository;
 	
 	
-	//Update Customer Profile
-	@PostMapping("/updateCustomerDetails")
-	public ResponseEntity<Object> updateCustomerDetails(@RequestBody UpdateUserRequest customer)
-		{
-			Customer fetchCustomer = authService.fetchCustomerByEmail(customer.getEmail());
-
-			if(!encoder.matches(customer.getPassword(), fetchCustomer.getPassword())) {
-				CustomerResponseForInvalidLogin response = new CustomerResponseForInvalidLogin("Wrong password", new Date());
-				return new ResponseEntity<Object>(response,HttpStatus.UNAUTHORIZED);
-			}
-			
-			if(customer.getContactNumber()!="")
-			{
-				fetchCustomer.setContactNo(customer.getContactNumber());
-			}
-			
-			if(customer.getName()!="")
-			{
-				fetchCustomer.setName(customer.getName());
-			}
-			if(customer.getEmail()!="")
-			{
-				fetchCustomer.setEmail(customer.getEmail());
-			}
-
-
-			customerRepository.save(fetchCustomer);
-			CustomerResponseForInvalidLogin response = new CustomerResponseForInvalidLogin("Success", new Date());
-			return new ResponseEntity<Object>(response,HttpStatus.OK);
-		}
-
-	
-	//Update Driver Profile
-	@PostMapping("/updateDriverDetails")
-	public ResponseEntity<Object> updateDriverDetails(@RequestBody UpdateUserRequest driver)
-		{
-			CabDriver fetchDriver = authService.fetchDriverByEmail(driver.getEmail());
-
-			if(!encoder.matches(driver.getPassword(), fetchDriver.getPassword())) {
-				CustomerResponseForInvalidLogin response = new CustomerResponseForInvalidLogin("Wrong password", new Date());
-				return new ResponseEntity<Object>(response,HttpStatus.UNAUTHORIZED);
-			}
-			
-			if(driver.getContactNumber()!="")
-			{
-				fetchDriver.setContactNumber(driver.getContactNumber());
-			}
-			if(driver.getName()!="")
-			{
-				fetchDriver.setName(driver.getName());
-			}
-			if(driver.getEmail()!="")
-			{
-				fetchDriver.setEmail(driver.getEmail());
-			}
-			driverRepository.save(fetchDriver);
-			CustomerResponseForInvalidLogin response = new CustomerResponseForInvalidLogin("Success", new Date());
-			return new ResponseEntity<Object>(response,HttpStatus.OK);
-		}
-	
 	
 	
 	// Set Cab Profile
@@ -118,9 +55,11 @@ public class SetUserProfileController {
 		CabDriver driver = authService.fetchDriverById(cabDetails.getDriver_id().getDriver_id());
 		if(fetchCab == null) {
 			cabDetails.setDriver_id(driver);
-			CabDetails cab = authService.createCab(cabDetails,driver);
-
-			CabDetailsResponse response = new CabDetailsResponse(new Date(), "Cab Created Succesfully", "200", cab);
+			CabDetails cab = authService.createCab(cabDetails);
+//			CabDetails setCab = cabRepository.getById(cab.getCab_id());
+//			driver.setCab_id(setCab);
+//			driverRepository.save(driver);
+			CabDetailsResponse response = new CabDetailsResponse(new Date(), "Cab Created Succesfully", "200",cab);
 
 			return new ResponseEntity<Object>(response, HttpStatus.OK);
 		}
@@ -128,6 +67,7 @@ public class SetUserProfileController {
 		return new ResponseEntity<Object>(response,HttpStatus.OK);
 	}
 
+	
 	//Get Cab Details
 	@GetMapping("/getCabDetails/{RegistrationNo}")
 	public ResponseEntity<Object> getCabDetails(@PathVariable("RegistrationNo") String RegistrationNo)
@@ -139,9 +79,11 @@ public class SetUserProfileController {
 				CustomResponseForNoUser response = new CustomResponseForNoUser(new Date(),"Cab Not Registered","409");
 				return new ResponseEntity<Object>(response,HttpStatus.OK);
 			}
-		
+			CabDriver driver = authService.fetchDriverById(fetchCab.getDriver_id().getDriver_id());
+			CustomCabResponse response = new CustomCabResponse(new Date(), "Cab Found", "200",driver,fetchCab);
 			return new ResponseEntity<Object>(fetchCab,HttpStatus.OK);
 		}
+	
 	
 	// Update Cab Details
 	@PostMapping("/updateCabDetails")

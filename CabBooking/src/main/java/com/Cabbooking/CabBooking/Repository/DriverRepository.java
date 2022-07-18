@@ -1,5 +1,7 @@
 package com.Cabbooking.CabBooking.Repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,6 +20,9 @@ public interface DriverRepository extends JpaRepository<CabDriver, Long>{
     
     @Query("SELECT a FROM CabDriver a WHERE a.driver_id.driver_id=?1")
 	CabDriver fetchDriverById(long driver_id);
+
+    @Query("SELECT a FROM CabDriver a WHERE a.activationStatus =0")
+	List<CabDriver> findAllByActivationStatus();
 
 
 }

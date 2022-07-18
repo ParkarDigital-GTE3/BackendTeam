@@ -52,11 +52,9 @@ public class AuthServiceImpl implements AuthService {
 
     //creating cab
 	@Override
-	public CabDetails createCab(CabDetails cabDetails,CabDriver cabDriver) {
-		CabDetails cab = cabRepository.save(cabDetails);
-		cabDriver.setCab_id(cab);
-		driverRepository.save(cabDriver);
-		return cab;
+	public CabDetails createCab(CabDetails cabDetails) {
+		
+		return cabRepository.save(cabDetails);
 	}
 	
 	//Fetching the details
