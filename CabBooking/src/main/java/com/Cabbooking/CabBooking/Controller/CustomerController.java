@@ -149,6 +149,7 @@ public class CustomerController {
 			UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"No Booking Details","409");
 			return new ResponseEntity<Object>(response,HttpStatus.CONFLICT);
 			}
+			bookingDetails.setStatus("0");
 			Booking result = bookingCabService.bookCab(bookingDetails);
 			BookingResponse response = new BookingResponse(new Date(),"Booking Confirmed","200",result);
 			return new ResponseEntity<Object>(response,HttpStatus.CREATED);
