@@ -19,9 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.Cabbooking.CabBooking.Model.Booking;
 import com.Cabbooking.CabBooking.Model.CabDriver;
+import com.Cabbooking.CabBooking.Model.Customer;
+import com.Cabbooking.CabBooking.Model.TripDetails;
 import com.Cabbooking.CabBooking.Repository.BookingRepository;
+import com.Cabbooking.CabBooking.Repository.CarTypesAndRatesRepo;
+import com.Cabbooking.CabBooking.Repository.CustomerRepository;
 import com.Cabbooking.CabBooking.Repository.DriverRepository;
+import com.Cabbooking.CabBooking.Repository.LocationRepository;
+import com.Cabbooking.CabBooking.Repository.TripRepository;
 import com.Cabbooking.CabBooking.Request.EmailOtpRequest;
+import com.Cabbooking.CabBooking.Request.TripRequest;
 import com.Cabbooking.CabBooking.Request.UpdatePasswordRequest;
 import com.Cabbooking.CabBooking.Request.UpdateUserRequest;
 import com.Cabbooking.CabBooking.Response.CustomResponseForNoUser;
@@ -30,6 +37,7 @@ import com.Cabbooking.CabBooking.Response.UserResponseForNoUser;
 import com.Cabbooking.CabBooking.Security.JwtUtils;
 import com.Cabbooking.CabBooking.Service.AuthService;
 import com.Cabbooking.CabBooking.Service.BookingCabService;
+import com.Cabbooking.CabBooking.Service.TripService;
 import com.Cabbooking.CabBooking.Service.ValidationService;
 
 
@@ -41,6 +49,9 @@ public class DriverController {
 	
 	@Autowired
 	DriverRepository driverRepository;
+
+	@Autowired
+	CustomerRepository customerRepository;
 	
     @Autowired
     AuthenticationManager authenticationManager;
@@ -64,11 +75,21 @@ public class DriverController {
 	@Autowired
 	BookingRepository bookingRepository;
 	
+	@Autowired
+	LocationRepository  locationRepository;
 	
+	@Autowired
+	TripRepository tripRepository;
 	
+	@Autowired
+	CarTypesAndRatesRepo carTypesAndRatesRepo;
+	
+	@Autowired
+	TripService tripService;
+
  	
 
-    // Fetch Driver By Email
+    // Fetch Driver By Email// View profile
 	@GetMapping("/getDriver/{email}")
 	public ResponseEntity<Object> getDriver(@PathVariable("email") String email)
 		{
@@ -104,7 +125,7 @@ public class DriverController {
 		}
 
 
-	//Update Driver Profile
+	//Update Driver Profile Personal Account
 	@PostMapping("/updateDriverDetails")
 	public ResponseEntity<Object> updateDriverDetails(@RequestBody UpdateUserRequest driver)
 		{
@@ -123,9 +144,9 @@ public class DriverController {
 			{
 				fetchDriver.setName(driver.getName());
 			}
-			if(driver.getEmail()!="")
+			if(driver.getDateOfBirth()!="")
 			{
-				fetchDriver.setEmail(driver.getEmail());
+				fetchDriver.setDateOfBirth(driver.getDateOfBirth());
 			}
 			
 			driverRepository.save(fetchDriver);
@@ -134,11 +155,11 @@ public class DriverController {
 		}
 	
 	
-	//Get Bookings Driver
+	//Get Bookings Driver // View Booking Request
 	@GetMapping("/getBookings")
 	public ResponseEntity<Object> getBookings(){
-		List<Booking> response = bookingRepository.findAll();
-		return new ResponseEntity<Object>(response,HttpStatus.FOUND);
+		List<Booking> response = bookingRepository.findBookingByStatus();
+		return new ResponseEntity<Object>(response,HttpStatus.OK);
 	}
 	
 	
@@ -146,22 +167,93 @@ public class DriverController {
 	@GetMapping("/getBooking/{id}")
 	public ResponseEntity<Object> getBookings(@PathVariable("id") long id){
 		Optional<Booking> response = bookingRepository.findById(id);
-		return new ResponseEntity<Object>(response,HttpStatus.FOUND);
+		return new ResponseEntity<Object>(response,HttpStatus.OK);
 	}
 	
 	
-	//update booking status as closed
-	@PatchMapping("/acceptBooking/{id}")
-	public ResponseEntity<Object> updateBookingStatus(@PathVariable("id") long id){
+	//update booking status as closed //Accept Booking By Driver
+	@PostMapping("/acceptBooking/{id}")
+	public ResponseEntity<Object> updateBookingStatus(@PathVariable("id") long id,@RequestBody UpdateUserRequest email){
 		Booking fetchBooking = bookingRepository.getById(id);
 		
 		if(fetchBooking==null) {
 			UserResponseForNoUser response =  new UserResponseForNoUser(new Date(),"Booking does not Exists!!","409");
 			return new ResponseEntity<Object>(response,HttpStatus.CONFLICT);
 		}
+		CabDriver driver = authService.fetchDriverByEmail(email.getEmail());
+		long driver_id = driver.getDriver_id();
+		fetchBooking.setDriverId(driver_id);
 		Booking response = bookingCabService.updateBooking(id);
+		
 		return new ResponseEntity<Object>(response,HttpStatus.ACCEPTED);
 	}
+
+/*
+		//Start Trip
+		@PatchMapping("/startTrip/{id}")
+		public ResponseEntity<Object> startTrip(@PathVariable("id")long id){
+			Booking fetchBooking = bookingRepository.getById(id);
+			CabDriver driver = driverRepository.getById(fetchBooking.getDriverId());
+			Customer customer = customerRepository.getById(fetchBooking.getCustomerId());
+			TripDetails trip = tripRepository.saveAll(fetchBooking.getSource(),fetchBooking.getDestination(),driver.getEmail(),customer.getEmail());
+			trip.setCustomerName(customer.getName());
+			trip.setDriverName(driver.getName());
+			trip.setCustomerContactNo(customer.getContactNo());
+			trip.setDriverContactNo(driver.getContactNumber());
+			trip.setCabCapacity(fetchBooking.getCabCapacity());
+			trip.setCabType(fetchBooking.getCabType());
+			long ratesKm = carTypesAndRatesRepo.fetchRates(fetchBooking.getCabType(),fetchBooking.getCabCapacity());
+			trip.setRatesPerKm(ratesKm);
+			long totalDist = locationRepository.fetchTotalDistance(fetchBooking.getSource(),fetchBooking.getDestination());
+			
+			Date date = new Date();
+			int tripDate =date.getDate();
+			trip.setDate(tripDate);
+			Long tripTime =date.getTime();
+			
+			trip.setTime(tripTime);
+			trip.setTotalFare((ratesKm)*(totalDist));
+			
+			TripDetails response = tripService.updateTrip(trip);
+			return new ResponseEntity<Object>(response,HttpStatus.ACCEPTED);
+		}
+	*/
+		
+/*
+	// Complete Trip Add details to trip table
+	@GetMapping("/CompleteTrip/{email}")
+	public ResponseEntity<Object> completeTrip(@PathVariable("email") String email){
+		//Driver Name and contact No JWT token
+		//Cab Registration Number using Driver Details
+		
+		TripDetails trip = tripRepository.getTripByEmail(email);
+		return new ResponseEntity<Object>(trip,HttpStatus.OK);
+		
+	}
 	
+*/
+	// View Specific Trip
+	 @PostMapping("/viewTrip/{id}")
+	 public ResponseEntity<Object> tripHistorySpecific(@PathVariable("id") long id){
+		 TripDetails trip = tripRepository.getById(id);
+		 return new ResponseEntity<Object>(trip,HttpStatus.OK);
+	 }
+
+/*	
+	// View Trip History Driver
+	@GetMapping("/viewTripHistory/{email}")
+	public  ResponseEntity<Object> TripHistoryDriver(@PathVariable("email") String email){
+
+		List<TripDetails> response = tripRepository.fetchTripByDriverEmail(email);
+		return new ResponseEntity<Object>(response,HttpStatus.OK);
+	}
 	
+
+	// View Earning
+	@GetMapping("/total/{email}")
+	public  Long findByemail(@PathVariable("email") String email)
+	{
+		return tripRepository.totalEarningByName(email);
+	}
+	*/
 }

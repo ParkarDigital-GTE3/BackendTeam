@@ -15,12 +15,15 @@ public interface AuthService {
 	CabDriver createDriver(CabDriver driver);
 	 
 	CabDetails createCab(CabDetails cabDetails);
+	
+	
 	 
 	Customer fetchCustomerByEmail(String emailId);
 
 	CabDriver fetchDriverByEmail(String emailId);
 	 
 	CabDetails fetchCabByRegistrationNo(String cabRegistrationNo);
+	
  
 	// User fetchUserByEmail(String emailId);
 
@@ -32,6 +35,10 @@ public interface AuthService {
 	void updateDriverPassword(String emailId, String newPassword);
 
 	CabDriver fetchDriverById(long driver_id);
+
+	CabDriver updateDriverCabId(CabDriver driver);
+
+	CabDetails fetchCabById(long cab_id);
 
 	//CabDetails createCab(CabDetails cabDetails, CabDriver cabDriver);
 

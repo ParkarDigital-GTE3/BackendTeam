@@ -25,8 +25,10 @@ public class Booking {
 	private String destination;
 	private String cabType;
 	private String cabCapacity;
+	private long customerId;
 	private String customerName;
 	private String custContactNo;
+	private long driverId;
 	@ColumnDefault("0")
 	private String status;
 	public long getBooking_id() {
@@ -59,6 +61,12 @@ public class Booking {
 	public void setCabCapacity(String cabCapacity) {
 		this.cabCapacity = cabCapacity;
 	}
+	public long getCustomerId() {
+		return customerId;
+	}
+	public void setCustomerId(long customerId) {
+		this.customerId = customerId;
+	}
 	public String getCustomerName() {
 		return customerName;
 	}
@@ -71,31 +79,34 @@ public class Booking {
 	public void setCustContactNo(String custContactNo) {
 		this.custContactNo = custContactNo;
 	}
+	public long getDriverId() {
+		return driverId;
+	}
+	public void setDriverId(long driverId) {
+		this.driverId = driverId;
+	}
 	public String getStatus() {
 		return status;
 	}
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public Booking() {
-		// TODO Auto-generated constructor stub
-	}
 	public Booking(long booking_id, String source, String destination, String cabType, String cabCapacity,
-			String customerName, String custContactNo, String status) {
+			long customerId, String customerName, String custContactNo, long driverId, String status) {
 		this.booking_id = booking_id;
 		this.source = source;
 		this.destination = destination;
 		this.cabType = cabType;
 		this.cabCapacity = cabCapacity;
+		this.customerId = customerId;
 		this.customerName = customerName;
 		this.custContactNo = custContactNo;
+		this.driverId = driverId;
 		this.status = status;
 	}
-	@Override
-	public String toString() {
-		return "Booking [booking_id=" + booking_id + ", source=" + source + ", destination=" + destination
-				+ ", cabType=" + cabType + ", cabCapacity=" + cabCapacity + ", customerName=" + customerName
-				+ ", custContactNo=" + custContactNo + ", status=" + status + "]";
+	public Booking() {
+		// TODO Auto-generated constructor stub
 	}
+	
 	
 }

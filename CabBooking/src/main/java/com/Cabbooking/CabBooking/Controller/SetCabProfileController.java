@@ -27,7 +27,7 @@ import com.Cabbooking.CabBooking.Service.AuthService;
 
 @RequestMapping("/login/Cabs")
 @RestController
-public class SetUserProfileController {
+public class SetCabProfileController {
 	
 	@Autowired
 	AuthService authService;
@@ -60,7 +60,9 @@ public class SetUserProfileController {
 //			driver.setCab_id(setCab);
 //			driverRepository.save(driver);
 			CabDetailsResponse response = new CabDetailsResponse(new Date(), "Cab Created Succesfully", "200",cab);
-
+			CabDetails updatedCab = authService.fetchCabById(cab.getCab_id());
+			driver.setCab_id(updatedCab);
+			CabDriver updatedDriverCabId = authService.updateDriverCabId(driver);
 			return new ResponseEntity<Object>(response, HttpStatus.OK);
 		}
 		UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"Already Cab Exists!!","401");
@@ -87,7 +89,7 @@ public class SetUserProfileController {
 	
 	// Update Cab Details
 	@PostMapping("/updateCabDetails")
-	public ResponseEntity<Object> updateUser(@RequestBody UpdateCabRequest cab)
+	public ResponseEntity<Object> updateCabDetails(@RequestBody UpdateCabRequest cab)
 		{
 			CabDetails fetchCab = authService.fetchCabByRegistrationNo(cab.getCabRegistrationNo());
 

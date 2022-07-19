@@ -106,6 +106,16 @@ public class AuthServiceImpl implements AuthService {
 		return driverRepository.fetchDriverById(driver_id);
 	}
 
+	@Override
+	public CabDriver updateDriverCabId(CabDriver driver) {
+		return driverRepository.save(driver);
+	}
+
+	@Override
+	public CabDetails fetchCabById(long cab_id) {
+		return cabRepository.fetchCabById(cab_id);
+	}
+
 
 
 }

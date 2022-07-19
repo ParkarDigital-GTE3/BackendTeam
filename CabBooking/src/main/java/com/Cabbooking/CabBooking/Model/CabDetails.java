@@ -22,25 +22,13 @@ public class CabDetails {
     private String cabType;
     private String cabCapacity;
     private String cabInsuranceNo;
-    
+//    
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="driver_id")
     private CabDriver driver_id;
 
 	public CabDetails() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public CabDetails(long cab_id, String licenseNo, String cab_name, String cabRegistrationNo, String cabType,
-			String cabCapacity, String cabInsuranceNo, CabDriver driver_id) {
-		this.cab_id = cab_id;
-		this.licenseNo = licenseNo;
-		this.cab_name = cab_name;
-		this.cabRegistrationNo = cabRegistrationNo;
-		this.cabType = cabType;
-		this.cabCapacity = cabCapacity;
-		this.cabInsuranceNo = cabInsuranceNo;
-		this.driver_id = driver_id;
 	}
 
 	public long getCab_id() {
@@ -107,9 +95,24 @@ public class CabDetails {
 		this.driver_id = driver_id;
 	}
 
-	
-  
-	
-	
+	public CabDetails(long cab_id, String licenseNo, String cab_name, String cabRegistrationNo, String cabType,
+			String cabCapacity, String cabInsuranceNo, CabDriver driver_id) {
+		this.cab_id = cab_id;
+		this.licenseNo = licenseNo;
+		this.cab_name = cab_name;
+		this.cabRegistrationNo = cabRegistrationNo;
+		this.cabType = cabType;
+		this.cabCapacity = cabCapacity;
+		this.cabInsuranceNo = cabInsuranceNo;
+		this.driver_id = driver_id;
+	}
 
+	@Override
+	public String toString() {
+		return "CabDetails [cab_id=" + cab_id + ", licenseNo=" + licenseNo + ", cab_name=" + cab_name
+				+ ", cabRegistrationNo=" + cabRegistrationNo + ", cabType=" + cabType + ", cabCapacity=" + cabCapacity
+				+ ", cabInsuranceNo=" + cabInsuranceNo + ", driver_id=" + driver_id + "]";
+	}
+
+	
 }

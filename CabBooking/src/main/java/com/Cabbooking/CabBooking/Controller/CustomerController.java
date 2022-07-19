@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,9 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.Cabbooking.CabBooking.Model.Booking;
 import com.Cabbooking.CabBooking.Model.Customer;
+import com.Cabbooking.CabBooking.Model.TripDetails;
 import com.Cabbooking.CabBooking.Repository.BookingRepository;
 import com.Cabbooking.CabBooking.Repository.CustomerRepository;
 import com.Cabbooking.CabBooking.Repository.DriverRepository;
+import com.Cabbooking.CabBooking.Repository.TripRepository;
 import com.Cabbooking.CabBooking.Request.EmailOtpRequest;
 import com.Cabbooking.CabBooking.Request.UpdatePasswordRequest;
 import com.Cabbooking.CabBooking.Request.UpdateUserRequest;
@@ -68,9 +72,15 @@ public class CustomerController {
 	@Autowired
 	BookingRepository bookingRepository;
 	
+	@Autowired
+	UserDetailsService userDetailsService;
+	
+	@Autowired
+	TripRepository tripRepository;
 	
 	
-    // Fetch Customer By Email
+	
+    // Fetch Customer By Email View Customer Profile
 	@GetMapping("/getCustomer/{email}")
 	public ResponseEntity<Object> getCustomer(@PathVariable("email") String email)
 		{
@@ -84,7 +94,6 @@ public class CustomerController {
 		
 			return new ResponseEntity<Object>(fetchCustomer,HttpStatus.OK);
 		}
-	
 	
 	//Update Customer Password
 	@PostMapping("/updateCustomerPassword")
@@ -109,7 +118,7 @@ public class CustomerController {
 		}
 
 	
-	//Update Customer Profile
+	//Update Customer Profile 
 	@PostMapping("/updateCustomerDetails")
 	public ResponseEntity<Object> updateCustomerDetails(@RequestBody UpdateUserRequest customer)
 			{
@@ -129,9 +138,9 @@ public class CustomerController {
 			{
 				fetchCustomer.setName(customer.getName());
 			}
-			if(customer.getEmail()!="")
+			if(customer.getDateOfBirth()!="")
 			{
-				fetchCustomer.setEmail(customer.getEmail());
+				fetchCustomer.setDateOfBirth(customer.getDateOfBirth());
 			}
 
 
@@ -141,18 +150,42 @@ public class CustomerController {
 		}
 
 	
-	// Create Booking Customer
-	@PostMapping("/bookCab")
-	public ResponseEntity<Object> bookCab(@RequestBody Booking bookingDetails){
+	// Create Booking Customer // Cab Book
+	@PostMapping("/bookCab/{email}")
+	public ResponseEntity<Object> bookCab(@PathVariable("email") String email,@RequestBody Booking bookingDetails){
 			
-			if(bookingDetails == null) {
+			if(bookingDetails != null) {
+				Customer customer = authService.fetchCustomerByEmail(email);
+				bookingDetails.setCustomerName(customer.getName());
+				bookingDetails.setCustContactNo(customer.getContactNo());
+				bookingDetails.setCustomerId(customer.getId());
+				bookingDetails.setStatus("0");
+				Booking result = bookingCabService.bookCab(bookingDetails);
+				BookingResponse response = new BookingResponse(new Date(),"Booking Confirmed","200",result);
+				return new ResponseEntity<Object>(response,HttpStatus.CREATED);	
+
+			}
 			UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"No Booking Details","409");
 			return new ResponseEntity<Object>(response,HttpStatus.CONFLICT);
-			}
-			bookingDetails.setStatus("0");
-			Booking result = bookingCabService.bookCab(bookingDetails);
-			BookingResponse response = new BookingResponse(new Date(),"Booking Confirmed","200",result);
-			return new ResponseEntity<Object>(response,HttpStatus.CREATED);
+			
 		}
+
 	
+/*
+	//View Trip Details Customer Side
+	 @PostMapping("/viewTrip/{id}")
+	 public ResponseEntity<Object> tripHistorySpecific(@PathVariable("id") long id){
+		 TripDetails trip = tripRepository.getById(id);
+		 return new ResponseEntity<Object>(trip,HttpStatus.OK);
+	 }
+	
+	// View Trip History Customer
+	 @GetMapping("/viewCustomerTripHistory/{email}")
+		public  ResponseEntity<Object> TripHistoryCustomer(@PathVariable("email") String email){
+
+			List<TripDetails> response = tripRepository.fetchTripByCustomerEmail(email);
+			return new ResponseEntity<Object>(response,HttpStatus.OK);
+
+		}
+*/
 }
