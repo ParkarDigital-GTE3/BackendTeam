@@ -65,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		log.info("Inside configure method of WebSecurityConfig ");
 		// TODO Auto-generated method stub
-		http.cors().and().csrf()
+		http.csrf()
 		.disable()
 		.exceptionHandling().
 		authenticationEntryPoint(unauthorizedHandler)
