@@ -28,8 +28,7 @@ public class UserDetailsImpl implements UserDetails {
 	private Long id;
 	
 	private String email;
-	
-	private String role;
+
 	private String password;
 
 	private Collection<? extends GrantedAuthority> authorities;
@@ -52,14 +51,6 @@ public class UserDetailsImpl implements UserDetails {
 		this.email = email;
 	}
 
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
 	public static Logger getLog() {
 		return log;
 	}
@@ -76,11 +67,10 @@ public UserDetailsImpl() {
 		// TODO Auto-generated constructor stub
 	}
 
-public UserDetailsImpl(Long id, String email, String role, String password,
+public UserDetailsImpl(Long id, String email, String password,
 		Collection<? extends GrantedAuthority> authorities) {
 	this.id = id;
 	this.email = email;
-	this.role = role;
 	this.password = password;
 	this.authorities = authorities;
 }
@@ -93,7 +83,7 @@ public static UserDetailsImpl buildDriver(CabDriver driver){
     authorities.add(new SimpleGrantedAuthority("user_role"));
     log.info("Authorities-----"+authorities);
     log.info(" Before build of UserDetailsImpl");
-    return new UserDetailsImpl(driver.getDriver_id(),driver.getRole(),driver.getEmail(),driver.getPassword(),authorities);
+    return new UserDetailsImpl(driver.getDriver_id(),driver.getEmail(),driver.getPassword(),authorities);
 }
 
 public static UserDetailsImpl build(Customer customer){
@@ -104,7 +94,7 @@ public static UserDetailsImpl build(Customer customer){
 	        authorities.add(new SimpleGrantedAuthority("user_role"));
 	        log.info("Authorities-----"+authorities);
 	        log.info(" Before build of UserDetailsImpl");
-	        return new UserDetailsImpl(customer.getId(),customer.getRole(),customer.getEmail(),customer.getPassword(),authorities);
+	        return new UserDetailsImpl(customer.getId(),customer.getEmail(),customer.getPassword(),authorities);
 	    }
 
 	@Override

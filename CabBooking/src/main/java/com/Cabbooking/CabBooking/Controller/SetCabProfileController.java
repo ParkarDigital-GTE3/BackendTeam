@@ -28,7 +28,7 @@ import com.Cabbooking.CabBooking.Service.CabService;
 import com.Cabbooking.CabBooking.Service.CustomerService;
 import com.Cabbooking.CabBooking.Service.DriverService;
 
-@RequestMapping("/login/DriverSetCab")
+@RequestMapping("/DriverSetCab")
 @RestController
 public class SetCabProfileController {
 	
@@ -54,6 +54,7 @@ public class SetCabProfileController {
 		CabDetails fetchCab = cabService.fetchCabByRegistrationNo(cabDetails.getCabRegistrationNo());
 //		CabDriver driver = authService.fetchDriverById(cabDetails.getDriver_id().getDriver_id());
 		CabDriver driver = authService.fetchDriverByEmail(cabDetails.getDriverEmail());
+		if(driver != null) {
 		if(fetchCab == null) {
 //			cabDetails.setDriver_id(driver);
 			CabDetails cab = cabService.createCab(cabDetails);
@@ -67,6 +68,10 @@ public class SetCabProfileController {
 		}
 		UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"Already Cab Exists!!","401");
 		return new ResponseEntity<Object>(response,HttpStatus.OK);
+	}
+		UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"Driver Not Found!!","401");
+		return new ResponseEntity<Object>(response,HttpStatus.OK);
+		
 	}
 
 	
@@ -113,6 +118,10 @@ public class SetCabProfileController {
 			if(cab.getLicenseNo()!="")
 			{
 				fetchCab.setLicenseNo(cab.getLicenseNo());
+			}
+			if(cab.getCab_name()!="")
+			{
+				fetchCab.setCab_name(cab.getCab_name());
 			}
 			
 			

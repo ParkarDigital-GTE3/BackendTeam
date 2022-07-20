@@ -47,7 +47,7 @@ import com.Cabbooking.CabBooking.Service.TripService;
 
 
 @RestController
-@RequestMapping("/login/Driver")
+@RequestMapping("/Driver")
 public class DriverController {
 	private static final Logger log = LoggerFactory.getLogger(DriverController.class);
 	@Autowired

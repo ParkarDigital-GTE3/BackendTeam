@@ -7,7 +7,23 @@ public class UpdateCabRequest {
 	private String cabType;
 	private String cabCapacity;
 	private String cabInsuranceNo;
+	private String cab_name;
 	
+	public UpdateCabRequest(String licenseNo, String cabRegistrationNo, String cabType, String cabCapacity,
+			String cabInsuranceNo, String cab_name) {
+		this.licenseNo = licenseNo;
+		this.cabRegistrationNo = cabRegistrationNo;
+		this.cabType = cabType;
+		this.cabCapacity = cabCapacity;
+		this.cabInsuranceNo = cabInsuranceNo;
+		this.cab_name = cab_name;
+	}
+	public String getCab_name() {
+		return cab_name;
+	}
+	public void setCab_name(String cab_name) {
+		this.cab_name = cab_name;
+	}
 	public String getLicenseNo() {
 		return licenseNo;
 	}
@@ -40,14 +56,6 @@ public class UpdateCabRequest {
 	}
 	public UpdateCabRequest() {
 		// TODO Auto-generated constructor stub
-	}
-	public UpdateCabRequest(String licenseNo, String cabRegistrationNo, String cabType, String cabCapacity,
-			String cabInsuranceNo) {
-		this.licenseNo = licenseNo;
-		this.cabRegistrationNo = cabRegistrationNo;
-		this.cabType = cabType;
-		this.cabCapacity = cabCapacity;
-		this.cabInsuranceNo = cabInsuranceNo;
 	}
 	
 	

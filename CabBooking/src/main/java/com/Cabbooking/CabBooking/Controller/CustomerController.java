@@ -48,7 +48,7 @@ import com.Cabbooking.CabBooking.Service.TripService;
 
 
 @RestController
-@RequestMapping("/login/Customer")
+@RequestMapping("/Customer")
 public class CustomerController {
 	private static final Logger log = LoggerFactory.getLogger(DriverController.class);
 	
@@ -151,6 +151,7 @@ public class CustomerController {
 			return new ResponseEntity<Object>(response,HttpStatus.OK);
 		}
 
+	
 	//Get source location
 	@GetMapping("/getSource")
 	public ResponseEntity<Object> getSource(){
