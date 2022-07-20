@@ -153,8 +153,8 @@ public class CustomerController {
 
 	
 	//Get source location
-	@GetMapping("/getSource")
-	public ResponseEntity<Object> getSource(){
+	@GetMapping("/getSources")
+	public ResponseEntity<Object> getSources(){
 		List<String> response = adminService.getSource();
 		return new ResponseEntity<Object>(response,HttpStatus.OK);
 	}
