@@ -3,7 +3,8 @@ package com.Cabbooking.CabBooking.Controller;
 import java.util.Date;
 import java.util.List;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Cabbooking.CabBooking.Model.Booking;
+import com.Cabbooking.CabBooking.Model.CabDriver;
 import com.Cabbooking.CabBooking.Model.Customer;
 import com.Cabbooking.CabBooking.Model.TripDetails;
 import com.Cabbooking.CabBooking.Repository.BookingRepository;
@@ -38,12 +40,14 @@ import com.Cabbooking.CabBooking.Service.BookingCabService;
 import com.Cabbooking.CabBooking.Service.CabService;
 import com.Cabbooking.CabBooking.Service.CustomerService;
 import com.Cabbooking.CabBooking.Service.DriverService;
+import com.Cabbooking.CabBooking.Service.TripService;
 
 
 
 @RestController
 @RequestMapping("/login/Customer")
 public class CustomerController {
+	private static final Logger log = LoggerFactory.getLogger(DriverController.class);
 	
 	@Autowired
 	AuthService authService;
@@ -66,6 +70,9 @@ public class CustomerController {
 	
 	@Autowired
 	UserDetailsService userDetailsService;
+	
+	@Autowired
+	TripService tripService;
 
 	
 	
@@ -161,21 +168,27 @@ public class CustomerController {
 		}
 
 	
-/*
-	//View Trip Details Customer Side
-	 @PostMapping("/viewTrip/{id}")
+
+	//View Trip Details Customer Side // not running
+	 @GetMapping("/viewTrip/{id}")
 	 public ResponseEntity<Object> tripHistorySpecific(@PathVariable("id") long id){
-		 TripDetails trip = tripRepository.getById(id);
+		 TripDetails trip = tripService.getById(id);
 		 return new ResponseEntity<Object>(trip,HttpStatus.OK);
 	 }
 	
 	// View Trip History Customer
 	 @GetMapping("/viewCustomerTripHistory/{email}")
-		public  ResponseEntity<Object> TripHistoryCustomer(@PathVariable("email") String email){
-
-			List<TripDetails> response = tripRepository.fetchTripByCustomerEmail(email);
+		public  ResponseEntity<Object> tripHistoryCustomer(@PathVariable("email") String email){
+		 Customer customer = customerService.fetchCustomerByEmail(email);
+		 log.info("After fetching customer "+customer);
+			if(customer==null) {
+				UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"Customer not found","409");
+				return new ResponseEntity<Object>(response,HttpStatus.OK);
+			}
+			List<TripDetails> response = tripService.fetchTripByCustomerEmail(email);
 			return new ResponseEntity<Object>(response,HttpStatus.OK);
+			}
 
-		}
-*/
+
+
 }

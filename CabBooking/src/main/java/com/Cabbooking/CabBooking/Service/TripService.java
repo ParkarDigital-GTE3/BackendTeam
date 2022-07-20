@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.Cabbooking.CabBooking.Model.Booking;
 import com.Cabbooking.CabBooking.Model.TripDetails;
+import com.Cabbooking.CabBooking.Response.LocationWiseTrips;
 
 public interface TripService {
 
@@ -22,6 +23,14 @@ public interface TripService {
 	List<TripDetails> fetchTripByDriverEmail(String email);
 
 	long calculateTotalEarning(String email);
+
+	List<TripDetails> fetchTripByCustomerEmail(String email);
+
+	Long fetchTotalEarning();
+
+	Long fetchTodaysTotalEarning(String date);
+
+	List<LocationWiseTrips> CountTrip(String source, String dest);
 
 
 }

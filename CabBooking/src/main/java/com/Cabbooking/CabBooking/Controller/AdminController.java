@@ -28,6 +28,7 @@ import com.Cabbooking.CabBooking.Repository.DriverRepository;
 import com.Cabbooking.CabBooking.Repository.LocationRepository;
 import com.Cabbooking.CabBooking.Repository.TripRepository;
 import com.Cabbooking.CabBooking.Response.CustomResponseForNoUser;
+import com.Cabbooking.CabBooking.Response.LocationWiseTrips;
 import com.Cabbooking.CabBooking.Response.UserResponseForNoUser;
 import com.Cabbooking.CabBooking.Service.AdminService;
 import com.Cabbooking.CabBooking.Service.AuthService;
@@ -173,45 +174,51 @@ public class AdminController {
 		 return new ResponseEntity<Object>(trip,HttpStatus.OK);
 	 }
 
-/* cd
-	 // View Earning Adminside()// Gaurav // View All time Earning 
+
+	 // View Earning Adminside
 	 @GetMapping("/totalEarning")
-	public Long  totalfare() {
-		return tripRepository.totalEarning();
-			 	
+	public ResponseEntity<Object> totalfare() {
+		 Long resonse = tripService.fetchTotalEarning();
+		 return new ResponseEntity<Object>(resonse,HttpStatus.OK);
 		}	
 	 
-	 //View Todays Earning //Vaishnavi
+	 //View Todays Earning 
 	@GetMapping("/todayFareTotals/{date}")
-	public Long selectTotals(@PathVariable("date") int date) {
-		return tripRepository.todaysEarning(date); 
+	public ResponseEntity<Object> selectTotals(@PathVariable("date") String date) {
+		Long response = tripService.fetchTodaysTotalEarning(date); 
+		return new ResponseEntity<Object>(response,HttpStatus.OK);
 		}
-	
-*/
+
+
 	 
 	 
 	 
 	 // DASHBOARD 
 	 
-	//Count Drivers// Girish
+	//Count Drivers
 	@GetMapping("/DriverCount")
 	public Long countDriver()
 	{
 		return driverService.countDriver();	
 	}
 		
-	 // Count customers // Girish
+	 // Count customers
 	@GetMapping("/CustomerCount")
 	public Long countCustomers()
 	{
 		return customerService.countCustomer();	
 	}
 	 
+	
+	
 	 //View Trips Date wise //
 	 
 	 // View Trip Location wise //
-	 
-	 
+/*	@GetMapping("/showTripsLocationwise")
+	public ResponseEntity<Object> CountTrip(@RequestBody ) {
+	 List<LocationWiseTrips> response = tripService.CountTrip();
+	}
+	 */
 
 	 
 

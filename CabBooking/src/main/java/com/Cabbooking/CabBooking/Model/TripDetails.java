@@ -30,12 +30,21 @@ public class TripDetails {
 	private String cabCapacity;
 	private String cabRegistrationNo;
 	private long ratesPerKm;
-	private Date tripDate;
+	private String tripDate;
 	private long totalFare;
-	
+
+	@Override
+	public String toString() {
+		return "TripDetails [trip_id=" + trip_id + ", customerName=" + customerName + ", driverName=" + driverName
+				+ ", driverEmail=" + driverEmail + ", customerEmail=" + customerEmail + ", source=" + source
+				+ ", destination=" + destination + ", totalDistance=" + totalDistance + ", cabType=" + cabType
+				+ ", cabCapacity=" + cabCapacity + ", cabRegistrationNo=" + cabRegistrationNo + ", ratesPerKm="
+				+ ratesPerKm + ", tripDate=" + tripDate + ", totalFare=" + totalFare + "]";
+	}
+
 	public TripDetails(long trip_id, String customerName, String driverName, String driverEmail, String customerEmail,
 			String source, String destination, long totalDistance, String cabType, String cabCapacity,
-			String cabRegistrationNo, long ratesPerKm, Date tripDate, long totalFare) {
+			String cabRegistrationNo, long ratesPerKm, String tripDate, long totalFare) {
 		this.trip_id = trip_id;
 		this.customerName = customerName;
 		this.driverName = driverName;
@@ -148,11 +157,11 @@ public class TripDetails {
 		this.ratesPerKm = ratesPerKm;
 	}
 
-	public Date getTripDate() {
+	public String getTripDate() {
 		return tripDate;
 	}
 
-	public void setTripDate(Date tripDate) {
+	public void setTripDate(String tripDate) {
 		this.tripDate = tripDate;
 	}
 

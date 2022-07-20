@@ -218,9 +218,8 @@ public class DriverController {
 			log.info("After ratesKm fetch"+ratesKm);
 			trip.setRatesPerKm(ratesKm);
 			log.info("After Set Total Rate fetch"+ratesKm);
-			Date date = new Date();/***************** Remaining***********/
+			/***************** Remaining***********/
 			//int dateInt = date.getDate();
-			//trip.setDate(date);
 			/*log.info("After Set Date  fetch"+date);
 			long time = date.getTime();
 			trip.setTime(time);
@@ -235,17 +234,17 @@ public class DriverController {
 
 		
 
-	// Complete Trip View Trip Details
+	// Complete Trip View Trip Details// not running
 	@GetMapping("/CompleteTrip/{id}")
-	public ResponseEntity<Object> completeTrip(@PathVariable("id") long id){
+	public TripDetails completeTrip(@PathVariable("id") long id){
 		
 		TripDetails trip = tripService.getById(id);
-		if(trip==null) {
+/*		if(trip==null) {
 			UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"Trip Not Found","409");
 			return new ResponseEntity<Object>(response,HttpStatus.CONFLICT);
-		}
+		}*/
 		
-		return new ResponseEntity<Object>(trip,HttpStatus.OK);
+		return trip;
 		
 	}
 	
@@ -263,15 +262,14 @@ public class DriverController {
 		}
 		
 		
-	// View Specific Trip
-	 @PostMapping("/viewTrip/{id}")
-	 public ResponseEntity<Object> tripHistorySpecific(@PathVariable("id") long id){
-		 TripDetails trip = tripService.getById(id);
+	// View Specific Trip //Not running
+	 @GetMapping("/viewTrip/{trip_id}")
+	 public ResponseEntity<Object> tripHistorySpecific(@PathVariable("trip_id") long trip_id){
+		 TripDetails trip = tripService.getById(trip_id);
 		 return new ResponseEntity<Object>(trip,HttpStatus.OK);
 	 }
 
-	
-	
+
 	
 
 	// View Earning Driver

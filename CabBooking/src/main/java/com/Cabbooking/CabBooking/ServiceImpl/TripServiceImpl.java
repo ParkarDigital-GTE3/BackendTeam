@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.Cabbooking.CabBooking.Model.Booking;
 import com.Cabbooking.CabBooking.Model.TripDetails;
 import com.Cabbooking.CabBooking.Repository.TripRepository;
+import com.Cabbooking.CabBooking.Response.LocationWiseTrips;
 import com.Cabbooking.CabBooking.Service.TripService;
 
 
@@ -41,8 +42,8 @@ public class TripServiceImpl implements TripService {
 	}
 
 	@Override
-	public TripDetails getById(long id) {
-		return tripRepository.getById(id);
+	public TripDetails getById(long trip_id) {
+		return tripRepository.getById(trip_id);
 	}
 
 	@Override
@@ -61,6 +62,30 @@ public class TripServiceImpl implements TripService {
 	public long calculateTotalEarning(String email) {
 
 		return tripRepository.calculateTotalEarning(email);
+	}
+
+	@Override
+	public List<TripDetails> fetchTripByCustomerEmail(String email) {
+	
+		return tripRepository.fetchTripByCustomerEmail(email);
+	}
+
+	@Override
+	public Long fetchTotalEarning() {
+		
+		return tripRepository.fetchTotalEarning();
+	}
+
+	@Override
+	public Long fetchTodaysTotalEarning(String date) {
+
+		return tripRepository.fetchTodaysTotalEarning(date);
+	}
+
+	@Override
+	public List<LocationWiseTrips> CountTrip(String source, String dest) {
+		
+		return tripRepository.countTrips(source,dest);
 	}
 	
 
