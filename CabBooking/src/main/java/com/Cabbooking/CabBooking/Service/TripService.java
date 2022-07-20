@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.Cabbooking.CabBooking.Model.Booking;
 import com.Cabbooking.CabBooking.Model.TripDetails;
+import com.Cabbooking.CabBooking.Request.TripDateWiseRequest;
 import com.Cabbooking.CabBooking.Response.LocationWiseTrips;
 
 public interface TripService {
@@ -27,9 +28,12 @@ public interface TripService {
 
 	Long fetchTodaysTotalEarning(String date);
 
-	List<LocationWiseTrips> CountTrip(String source, String dest);
 
 	TripDetails getTripById(long trip_id);
+
+	List<TripDateWiseRequest> countTripByDate();
+
+	List<LocationWiseTrips> CountTripByLocation();
 
 
 }

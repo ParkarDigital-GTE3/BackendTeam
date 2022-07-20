@@ -29,6 +29,7 @@ import com.Cabbooking.CabBooking.Repository.CustomerRepository;
 import com.Cabbooking.CabBooking.Repository.DriverRepository;
 import com.Cabbooking.CabBooking.Repository.LocationRepository;
 import com.Cabbooking.CabBooking.Repository.TripRepository;
+import com.Cabbooking.CabBooking.Request.DriverRequest;
 import com.Cabbooking.CabBooking.Request.EmailOtpRequest;
 import com.Cabbooking.CabBooking.Request.TripRequest;
 import com.Cabbooking.CabBooking.Request.UpdatePasswordRequest;
@@ -73,11 +74,10 @@ public class DriverController {
  	
 
     // Fetch Driver By Email// View profile
-	@GetMapping("/getDriver/{email}")
-	public ResponseEntity<Object> getDriver(@PathVariable("email") String email)
+	@PostMapping("/getDriver")
+	public ResponseEntity<Object> getDriver(@RequestBody UpdateUserRequest getDriverRequest)
 		{
-			System.out.println(email);
-			CabDriver fetchDriver = authService.fetchDriverByEmail(email);
+			CabDriver fetchDriver = authService.fetchDriverByEmail(getDriverRequest.getEmail());
 			if (fetchDriver == null)
 			{
 				CustomResponseForNoUser response = new CustomResponseForNoUser(new Date(),"Error in authentication","409");
@@ -147,16 +147,16 @@ public class DriverController {
 	
 	
 	//get single Booking by id
-	@GetMapping("/getBooking/{id}")
-	public ResponseEntity<Object> getBookings(@PathVariable("id") long id){
-		Optional<Booking> response = bookingCabService.findBookingById(id);
+	@PostMapping("/getBooking")
+	public ResponseEntity<Object> getBookingsById(@RequestBody Booking bookingRequest){
+		Optional<Booking> response = bookingCabService.findBookingById(bookingRequest.getBooking_id());
 		return new ResponseEntity<Object>(response,HttpStatus.OK);
 	}
 	
 	
 	//update booking status as closed //Accept Booking By Driver
-	@PostMapping("/acceptBooking/{id}")
-	public ResponseEntity<Object> updateBookingStatus(@PathVariable("id") long id,@RequestBody UpdateUserRequest email){
+	@PostMapping("/acceptBooking/{booking_id}")
+	public ResponseEntity<Object> updateBookingStatus(@PathVariable("booking_id") long id,@RequestBody UpdateUserRequest email){
 		Booking fetchBooking = bookingCabService.getBookingById(id);
 		
 		if(fetchBooking==null) {
@@ -174,8 +174,8 @@ public class DriverController {
 	
 
 	//Start Trip, Add details to trip
-	@PostMapping("/startTrip/{id}")
-	public ResponseEntity<Object> startTrip(@PathVariable("id") long id,@RequestBody TripDetails trip){
+	@PostMapping("/startTrip/{booking_id}")
+	public ResponseEntity<Object> startTrip(@PathVariable("booking_id") long id,@RequestBody TripDetails trip){
 			log.info("**************In Start Trip*********");
 			Booking fetchBooking = bookingCabService.getBookingById(id);
 			log.info("after fetchbooking"+fetchBooking);
@@ -245,33 +245,37 @@ public class DriverController {
 	
 
 	// View Trip History Driver
-	@GetMapping("/viewTripHistory/{email}")
-	public  ResponseEntity<Object> TripHistoryDriver(@PathVariable("email") String email){
-		CabDriver fetchDriver = driverService.fetchDriverByEmail(email);
+	@PostMapping("/viewTripHistory")
+	public  ResponseEntity<Object> TripHistoryDriver(@RequestBody DriverRequest driverRequest){
+		CabDriver fetchDriver = driverService.fetchDriverByEmail(driverRequest.getEmail());
 		if(fetchDriver==null) {
 			UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"driver not found","409");
 			return new ResponseEntity<Object>(response,HttpStatus.OK);
 		}
-		List<TripDetails> response = tripService.fetchTripByDriverEmail(email);
+		List<TripDetails> response = tripService.fetchTripByDriverEmail(driverRequest.getEmail());
 		return new ResponseEntity<Object>(response,HttpStatus.OK);
 		}
 		
 		
 	// View Specific Trip 
-	@GetMapping("/viewTrip/{trip_id}")
-	public ResponseEntity<Object> tripHistorySpecific(@PathVariable("trip_id") long trip_id){
-		 TripDetails trip = tripService.getTripById(trip_id);
+	@PostMapping("/viewTrip")
+	public ResponseEntity<Object> tripHistorySpecific(@RequestBody DriverRequest driverRequest){
+		 TripDetails trip = tripService.getTripById(driverRequest.getId());
 		 return new ResponseEntity<Object>(trip,HttpStatus.OK);
 	 }
 
 
 	// View Earning Driver
-	@GetMapping("/totalEarningDriver/{email}")
-	public  Long getTotalEarningOfDriver(@PathVariable("email") String email)
+	@PostMapping("/totalEarningDriver")
+	public  ResponseEntity<Object> getTotalEarningOfDriver(@RequestBody DriverRequest driverRequest)
 	{
-		CabDriver fetchDriver = driverService.fetchDriverByEmail(email);
-		long totalEaring = tripService.calculateTotalEarning(email);
-		return totalEaring;
-	}
+		CabDriver fetchDriver = driverService.fetchDriverByEmail(driverRequest.getEmail());
+		if(fetchDriver!=null) {
+		long totalEaring = tripService.calculateTotalEarning(driverRequest.getEmail());
+		return new ResponseEntity<Object>(totalEaring,HttpStatus.OK);
+		}
+		UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"No Driver Found","409");
+		return new ResponseEntity<Object>(response,HttpStatus.CONFLICT);
+		}
 	
 }

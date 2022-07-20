@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.Cabbooking.CabBooking.Model.Booking;
 import com.Cabbooking.CabBooking.Model.TripDetails;
 import com.Cabbooking.CabBooking.Repository.TripRepository;
+import com.Cabbooking.CabBooking.Request.TripDateWiseRequest;
 import com.Cabbooking.CabBooking.Response.LocationWiseTrips;
 import com.Cabbooking.CabBooking.Service.TripService;
 
@@ -72,16 +73,23 @@ public class TripServiceImpl implements TripService {
 		return tripRepository.fetchTodaysTotalEarning(date);
 	}
 
-	@Override
-	public List<LocationWiseTrips> CountTrip(String source, String dest) {
-		
-		return tripRepository.countTrips(source,dest);
-	}
 
 	@Override
 	public TripDetails getTripById(long trip_id) {
 		
 		return tripRepository.getTripById(trip_id);
+	}
+
+	@Override
+	public List<TripDateWiseRequest> countTripByDate() {
+		
+		return tripRepository.countTripByDate();
+	}
+
+	@Override
+	public List<LocationWiseTrips> CountTripByLocation() {
+
+		return tripRepository.CountTripByLocation();
 	}
 	
 

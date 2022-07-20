@@ -1,10 +1,8 @@
 package com.Cabbooking.CabBooking.Request;
 
-public class TripRequest {
-
+public class DriverRequest {
 	private String email;
 	private long id;
-	private String date;
 	public String getEmail() {
 		return email;
 	}
@@ -17,19 +15,13 @@ public class TripRequest {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getDate() {
-		return date;
-	}
-	public void setDate(String date) {
-		this.date = date;
-	}
-	public TripRequest(String email, long id, String date) {
+	public DriverRequest(String email, long id) {
 		this.email = email;
 		this.id = id;
-		this.date = date;
 	}
-	public TripRequest() {
+	public DriverRequest() {
 		// TODO Auto-generated constructor stub
 	}
 	
+
 }

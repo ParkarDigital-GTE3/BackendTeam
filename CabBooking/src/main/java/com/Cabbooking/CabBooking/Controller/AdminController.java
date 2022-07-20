@@ -27,6 +27,8 @@ import com.Cabbooking.CabBooking.Repository.CustomerRepository;
 import com.Cabbooking.CabBooking.Repository.DriverRepository;
 import com.Cabbooking.CabBooking.Repository.LocationRepository;
 import com.Cabbooking.CabBooking.Repository.TripRepository;
+import com.Cabbooking.CabBooking.Request.TripDateWiseRequest;
+import com.Cabbooking.CabBooking.Request.TripRequest;
 import com.Cabbooking.CabBooking.Response.CustomResponseForNoUser;
 import com.Cabbooking.CabBooking.Response.LocationWiseTrips;
 import com.Cabbooking.CabBooking.Response.UserResponseForNoUser;
@@ -168,9 +170,9 @@ public class AdminController {
 	
 	 
 	 // View Specific Trip()
-	 @GetMapping("/viewTrip/{id}")
-	 public ResponseEntity<Object> getSpecificTrip(@PathVariable("id") long id){
-		 TripDetails trip = tripService.getTripById(id);
+	 @PostMapping("/viewTrip")
+	 public ResponseEntity<Object> getSpecificTrip(@RequestBody TripRequest tripRequest){
+		 TripDetails trip = tripService.getTripById(tripRequest.getId());
 		 return new ResponseEntity<Object>(trip,HttpStatus.OK);
 	 }
 
@@ -183,9 +185,9 @@ public class AdminController {
 		}	
 	 
 	 //View Todays Earning 
-	@GetMapping("/todayFareTotals/{date}")
-	public ResponseEntity<Object> selectTotals(@PathVariable("date") String date) {
-		Long response = tripService.fetchTodaysTotalEarning(date); 
+	@PostMapping("/todayTotalsEarning")
+	public ResponseEntity<Object> todayTotalsEarning(@RequestBody TripRequest tripRequest) {
+		Long response = tripService.fetchTodaysTotalEarning(tripRequest.getDate()); 
 		return new ResponseEntity<Object>(response,HttpStatus.OK);
 		}
 
@@ -212,14 +214,20 @@ public class AdminController {
 	
 	
 	 //View Trips Date wise //
-	 
-	 // View Trip Location wise //
-/*	@GetMapping("/showTripsLocationwise")
-	public ResponseEntity<Object> CountTrip(@RequestBody ) {
-	 List<LocationWiseTrips> response = tripService.CountTrip();
+	@GetMapping("/viewTripDateWise")
+	public ResponseEntity<Object> viewTripDateWise(){
+		List<TripDateWiseRequest> response = tripService.countTripByDate();
+		return new ResponseEntity<Object>(response,HttpStatus.OK);
 	}
-	 */
-
+	 
+/*	 // View Trip Location wise //
+	@GetMapping("/showTripsLocationwise")
+	public ResponseEntity<Object> CountTripByLocation() {
+	 List<LocationWiseTrips> response = tripService.CountTripByLocation();
+	return new ResponseEntity<Object>(response,HttpStatus.OK);
+	}
+	 
+*/
 	 
 
 }

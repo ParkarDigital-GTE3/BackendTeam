@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.Cabbooking.CabBooking.Model.Booking;
 import com.Cabbooking.CabBooking.Model.TripDetails;
+import com.Cabbooking.CabBooking.Request.TripDateWiseRequest;
 import com.Cabbooking.CabBooking.Response.LocationWiseTrips;
 
 @Repository
@@ -28,12 +29,18 @@ public interface TripRepository extends JpaRepository<TripDetails, Long> {
 	@Query("SELECT SUM(totalFare) FROM TripDetails a WHERE a.tripDate=?1")
 	Long fetchTodaysTotalEarning(String date);
 
-	@Query("SELECT COUNT(*) FROM TripDetails a WHERE source=:source AND dest=:dest")
-	List<LocationWiseTrips> countTrips(String source, String dest);
 
 	@Query("SELECT a FROM TripDetails a WHERE a.trip_id =?1")
 	TripDetails getTripById(long trip_id);
+
+	@Query("SELECT DISTINCT(tripDate),COUNT(DISTINCT(tripDate)) FROM TripDetails")
+	List<TripDateWiseRequest> countTripByDate();
+	
+	@Query("SELECT source,destination,COUNT(*) FROM TripDetails GROUP BY source,destination")
+	List<LocationWiseTrips> CountTripByLocation();
+
 /*	
+ * 
 	@Query("SELECT SUM(totalfare) FROM TripDetails a")
 	Long totalEarning();
 
@@ -57,5 +64,6 @@ public interface TripRepository extends JpaRepository<TripDetails, Long> {
 	@Query("SELECT a.trip_id FROM TripDetails a WHERE a.trip_id=:date")
 	Long todaysEarning(int date);
 */
+
 
 }

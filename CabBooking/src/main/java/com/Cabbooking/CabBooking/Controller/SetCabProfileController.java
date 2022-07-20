@@ -28,7 +28,7 @@ import com.Cabbooking.CabBooking.Service.CabService;
 import com.Cabbooking.CabBooking.Service.CustomerService;
 import com.Cabbooking.CabBooking.Service.DriverService;
 
-@RequestMapping("/DriverSetCab")
+@RequestMapping("/login/DriverSetCab")
 @RestController
 public class SetCabProfileController {
 	
@@ -48,12 +48,12 @@ public class SetCabProfileController {
 	
 	
 	// Set Cab Profile
-	@PostMapping("/setCabDetails/{driver_email}")
-	public ResponseEntity<Object> setCabDetails(@RequestBody CabDetails cabDetails,@PathVariable("driver_email") String driver_email)
+	@PostMapping("/setCabDetails")
+	public ResponseEntity<Object> setCabDetails(@RequestBody CabDetails cabDetails)
 	{
 		CabDetails fetchCab = cabService.fetchCabByRegistrationNo(cabDetails.getCabRegistrationNo());
 //		CabDriver driver = authService.fetchDriverById(cabDetails.getDriver_id().getDriver_id());
-		CabDriver driver = authService.fetchDriverByEmail(driver_email);
+		CabDriver driver = authService.fetchDriverByEmail(cabDetails.getDriverEmail());
 		if(fetchCab == null) {
 //			cabDetails.setDriver_id(driver);
 			CabDetails cab = cabService.createCab(cabDetails);
@@ -71,11 +71,10 @@ public class SetCabProfileController {
 
 	
 	//Get Cab Details
-	@GetMapping("/getCabDetails/{RegistrationNo}")
-	public ResponseEntity<Object> getCabDetails(@PathVariable("RegistrationNo") String RegistrationNo)
+	@PostMapping("/getCabDetails")
+	public ResponseEntity<Object> getCabDetails(@RequestBody UpdateCabRequest getCabRequest)
 		{
-			System.out.println(RegistrationNo);
-			CabDetails fetchCab = cabService.fetchCabByRegistrationNo(RegistrationNo);
+			CabDetails fetchCab = cabService.fetchCabByRegistrationNo(getCabRequest.getCabRegistrationNo());
 			if (fetchCab == null)
 			{
 				CustomResponseForNoUser response = new CustomResponseForNoUser(new Date(),"Cab Not Registered","409");

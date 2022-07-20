@@ -27,7 +27,9 @@ import com.Cabbooking.CabBooking.Repository.BookingRepository;
 import com.Cabbooking.CabBooking.Repository.CustomerRepository;
 import com.Cabbooking.CabBooking.Repository.DriverRepository;
 import com.Cabbooking.CabBooking.Repository.TripRepository;
+import com.Cabbooking.CabBooking.Request.CustomerRequest;
 import com.Cabbooking.CabBooking.Request.EmailOtpRequest;
+import com.Cabbooking.CabBooking.Request.TripRequest;
 import com.Cabbooking.CabBooking.Request.UpdatePasswordRequest;
 import com.Cabbooking.CabBooking.Request.UpdateUserRequest;
 import com.Cabbooking.CabBooking.Response.BookingResponse;
@@ -82,11 +84,10 @@ public class CustomerController {
 	
 	
     // Fetch Customer By Email View Customer Profile
-	@GetMapping("/getCustomer/{email}")
-	public ResponseEntity<Object> getCustomer(@PathVariable("email") String email)
+	@PostMapping("/getCustomer")
+	public ResponseEntity<Object> getCustomer(@RequestBody CustomerRequest customerRequest)
 		{
-			System.out.println(email);
-			Customer fetchCustomer = authService.fetchCustomerByEmail(email);
+			Customer fetchCustomer = authService.fetchCustomerByEmail(customerRequest.getEmail());
 			if (fetchCustomer == null)
 			{
 				CustomResponseForNoUser response = new CustomResponseForNoUser(new Date(),"Error in authentication","409");
@@ -173,14 +174,13 @@ public class CustomerController {
 
 	
 	// Create Booking Customer // Cab Book
-	@PostMapping("/bookCab/{email}")
-	public ResponseEntity<Object> bookCab(@PathVariable("email") String email,@RequestBody Booking bookingDetails){
+	@PostMapping("/bookCab")
+	public ResponseEntity<Object> bookCab(@RequestBody Booking bookingDetails){
 			
 			if(bookingDetails != null) {
-				Customer customer = authService.fetchCustomerByEmail(email);
+				Customer customer = customerService.fetchCustomerByEmail(bookingDetails.getCustomerEmail());
 //				bookingDetails.setCustomerName(customer.getName());
 //				bookingDetails.setCustContactNo(customer.getContactNo());
-				bookingDetails.setCustomerId(customer.getId());
 				bookingDetails.setStatus("0");
 				Booking result = bookingCabService.bookCab(bookingDetails);
 				BookingResponse response = new BookingResponse(new Date(),"Booking Confirmed","200",result,customer.getName(),customer.getContactNo());
@@ -195,22 +195,22 @@ public class CustomerController {
 	
 
 	//View Trip Details Customer Side 
-	 @GetMapping("/viewTrip/{id}")
-	 public ResponseEntity<Object> tripHistorySpecific(@PathVariable("id") long id){
-		 TripDetails trip = tripService.getTripById(id);
+	 @PostMapping("/viewTrip")
+	 public ResponseEntity<Object> tripHistorySpecific(@RequestBody TripRequest tripRequest){
+		 TripDetails trip = tripService.getTripById(tripRequest.getId());
 		 return new ResponseEntity<Object>(trip,HttpStatus.OK);
 	 }
 	
 	// View Trip History Customer
-	 @GetMapping("/viewCustomerTripHistory/{email}")
-		public  ResponseEntity<Object> tripHistoryCustomer(@PathVariable("email") String email){
-		 Customer customer = customerService.fetchCustomerByEmail(email);
+	 @PostMapping("/viewCustomerTripHistory")
+		public  ResponseEntity<Object> tripHistoryCustomer(@RequestBody TripRequest tripRequest){
+		 Customer customer = customerService.fetchCustomerByEmail(tripRequest.getEmail());
 		 log.info("After fetching customer "+customer);
 			if(customer==null) {
 				UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"Customer not found","409");
 				return new ResponseEntity<Object>(response,HttpStatus.OK);
 			}
-			List<TripDetails> response = tripService.fetchTripByCustomerEmail(email);
+			List<TripDetails> response = tripService.fetchTripByCustomerEmail(tripRequest.getEmail());
 			return new ResponseEntity<Object>(response,HttpStatus.OK);
 			}
 

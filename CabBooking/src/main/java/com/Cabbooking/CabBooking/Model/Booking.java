@@ -25,7 +25,7 @@ public class Booking {
 	private String destination;
 	private String cabType;
 	private String cabCapacity;
-	private long customerId;
+	private String customerEmail;
 	private long driverId;
 	@ColumnDefault("0")
 	private String status;
@@ -62,11 +62,11 @@ public class Booking {
 	public void setCabCapacity(String cabCapacity) {
 		this.cabCapacity = cabCapacity;
 	}
-	public long getCustomerId() {
-		return customerId;
+	public String getCustomerEmail() {
+		return customerEmail;
 	}
-	public void setCustomerId(long customerId) {
-		this.customerId = customerId;
+	public void setCustomerEmail(String customerEmail) {
+		this.customerEmail = customerEmail;
 	}
 	public long getDriverId() {
 		return driverId;
@@ -81,21 +81,15 @@ public class Booking {
 		this.status = status;
 	}
 	public Booking(long booking_id, String source, String destination, String cabType, String cabCapacity,
-			long customerId, long driverId, String status) {
+			String customerEmail, long driverId, String status) {
 		this.booking_id = booking_id;
 		this.source = source;
 		this.destination = destination;
 		this.cabType = cabType;
 		this.cabCapacity = cabCapacity;
-		this.customerId = customerId;
+		this.customerEmail = customerEmail;
 		this.driverId = driverId;
 		this.status = status;
-	}
-	@Override
-	public String toString() {
-		return "Booking [booking_id=" + booking_id + ", source=" + source + ", destination=" + destination
-				+ ", cabType=" + cabType + ", cabCapacity=" + cabCapacity + ", customerId=" + customerId + ", driverId="
-				+ driverId + ", status=" + status + "]";
 	}
 	
 	
