@@ -170,7 +170,7 @@ public class AdminController {
 	 // View Specific Trip()
 	 @GetMapping("/viewTrip/{id}")
 	 public ResponseEntity<Object> getSpecificTrip(@PathVariable("id") long id){
-		 TripDetails trip = tripService.getSpecificTrip(id);
+		 TripDetails trip = tripService.getTripById(id);
 		 return new ResponseEntity<Object>(trip,HttpStatus.OK);
 	 }
 

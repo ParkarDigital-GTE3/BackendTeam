@@ -15,5 +15,5 @@ public interface BookingCabService {
 
 	Optional<Booking> findBookingById(long id);
 
-	Booking getById(long id);
+	Booking getBookingById(long id);
 }

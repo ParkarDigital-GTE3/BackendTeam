@@ -34,17 +34,7 @@ public class TripServiceImpl implements TripService {
 	
 		return tripRepository.findAll();
 	}
-	
-	@Override
-	public TripDetails getSpecificTrip(long id) {
 
-		return tripRepository.getById(id);
-	}
-
-	@Override
-	public TripDetails getById(long trip_id) {
-		return tripRepository.getById(trip_id);
-	}
 
 	@Override
 	public TripDetails createTrip(TripDetails trip) {
@@ -86,6 +76,12 @@ public class TripServiceImpl implements TripService {
 	public List<LocationWiseTrips> CountTrip(String source, String dest) {
 		
 		return tripRepository.countTrips(source,dest);
+	}
+
+	@Override
+	public TripDetails getTripById(long trip_id) {
+		
+		return tripRepository.getTripById(trip_id);
 	}
 	
 

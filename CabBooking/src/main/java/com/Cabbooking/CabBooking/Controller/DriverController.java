@@ -157,7 +157,7 @@ public class DriverController {
 	//update booking status as closed //Accept Booking By Driver
 	@PostMapping("/acceptBooking/{id}")
 	public ResponseEntity<Object> updateBookingStatus(@PathVariable("id") long id,@RequestBody UpdateUserRequest email){
-		Booking fetchBooking = bookingCabService.getById(id);
+		Booking fetchBooking = bookingCabService.getBookingById(id);
 		
 		if(fetchBooking==null) {
 			UserResponseForNoUser response =  new UserResponseForNoUser(new Date(),"Booking does not Exists!!","409");
@@ -177,7 +177,7 @@ public class DriverController {
 	@PostMapping("/startTrip/{id}")
 	public ResponseEntity<Object> startTrip(@PathVariable("id") long id,@RequestBody TripDetails trip){
 			log.info("**************In Start Trip*********");
-			Booking fetchBooking = bookingCabService.getById(id);
+			Booking fetchBooking = bookingCabService.getBookingById(id);
 			log.info("after fetchbooking"+fetchBooking);
 			System.out.println(trip.getDriverEmail());
 			CabDriver driver = driverService.fetchDriverByEmail(trip.getDriverEmail());
@@ -218,12 +218,6 @@ public class DriverController {
 			log.info("After ratesKm fetch"+ratesKm);
 			trip.setRatesPerKm(ratesKm);
 			log.info("After Set Total Rate fetch"+ratesKm);
-			/***************** Remaining***********/
-			//int dateInt = date.getDate();
-			/*log.info("After Set Date  fetch"+date);
-			long time = date.getTime();
-			trip.setTime(time);
-			log.info("After Set Time fetch"+time);*/
 			
 			trip.setTotalFare(totalDist*ratesKm);
 			log.info("After Set Total Fare fetch"+totalDist*ratesKm);
@@ -234,17 +228,18 @@ public class DriverController {
 
 		
 
-	// Complete Trip View Trip Details// not running
-	@GetMapping("/CompleteTrip/{id}")
-	public TripDetails completeTrip(@PathVariable("id") long id){
-		
-		TripDetails trip = tripService.getById(id);
+	// Complete Trip View Trip Details/
+	@PostMapping("/CompleteTrip")
+	public ResponseEntity<Object> completeTrip(@RequestBody TripDetails trip){
+		log.info("Trip Id"+trip.getTrip_id());
+		TripDetails completeTrip = tripService.getTripById(trip.getTrip_id());
+		log.info("Trip Id"+completeTrip);
 /*		if(trip==null) {
 			UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"Trip Not Found","409");
 			return new ResponseEntity<Object>(response,HttpStatus.CONFLICT);
 		}*/
 		
-		return trip;
+		return new ResponseEntity<Object>(completeTrip,HttpStatus.OK);
 		
 	}
 	
@@ -262,15 +257,13 @@ public class DriverController {
 		}
 		
 		
-	// View Specific Trip //Not running
-	 @GetMapping("/viewTrip/{trip_id}")
-	 public ResponseEntity<Object> tripHistorySpecific(@PathVariable("trip_id") long trip_id){
-		 TripDetails trip = tripService.getById(trip_id);
+	// View Specific Trip 
+	@GetMapping("/viewTrip/{trip_id}")
+	public ResponseEntity<Object> tripHistorySpecific(@PathVariable("trip_id") long trip_id){
+		 TripDetails trip = tripService.getTripById(trip_id);
 		 return new ResponseEntity<Object>(trip,HttpStatus.OK);
 	 }
 
-
-	
 
 	// View Earning Driver
 	@GetMapping("/totalEarningDriver/{email}")

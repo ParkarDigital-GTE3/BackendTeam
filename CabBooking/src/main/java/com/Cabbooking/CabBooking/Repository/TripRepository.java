@@ -28,9 +28,11 @@ public interface TripRepository extends JpaRepository<TripDetails, Long> {
 	@Query("SELECT SUM(totalFare) FROM TripDetails a WHERE a.tripDate=?1")
 	Long fetchTodaysTotalEarning(String date);
 
-	@Query("SELECT COUNT(*) FROM TripDetails WHERE source=:source AND dest=:dest")
+	@Query("SELECT COUNT(*) FROM TripDetails a WHERE source=:source AND dest=:dest")
 	List<LocationWiseTrips> countTrips(String source, String dest);
 
+	@Query("SELECT a FROM TripDetails a WHERE a.trip_id =?1")
+	TripDetails getTripById(long trip_id);
 /*	
 	@Query("SELECT SUM(totalfare) FROM TripDetails a")
 	Long totalEarning();
@@ -54,5 +56,6 @@ public interface TripRepository extends JpaRepository<TripDetails, Long> {
 
 	@Query("SELECT a.trip_id FROM TripDetails a WHERE a.trip_id=:date")
 	Long todaysEarning(int date);
-*/	
+*/
+
 }

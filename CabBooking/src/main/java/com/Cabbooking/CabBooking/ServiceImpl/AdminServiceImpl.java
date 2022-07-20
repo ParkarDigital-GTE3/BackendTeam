@@ -1,5 +1,7 @@
 package com.Cabbooking.CabBooking.ServiceImpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,5 +53,25 @@ public class AdminServiceImpl implements AdminService{
 		
 		return carTypesAndRatesRepo.fetchRates(cabType, cabCapacity);
 	}
+
+	@Override
+	public List<String> getSource() {
+		
+		return locationRepository.getSource();
+	}
+
+	@Override
+	public List<String> getDestination() {
+		
+		return locationRepository.getDestination();
+	}
+
+	@Override
+	public List<String> getCabTypes() {
+
+		return carTypesAndRatesRepo.getCabTypes();
+	}
+
+
 
 }

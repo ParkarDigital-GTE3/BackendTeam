@@ -21,4 +21,8 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 	@Query(value="SELECT COUNT(*) FROM Customer")
 	Long countCustomer();
 
+
+	@Query("SELECT a FROM Customer a WHERE a.id=?1")
+	Customer getCustomerById(long customerId);
+
 }

@@ -28,6 +28,9 @@ public interface DriverRepository extends JpaRepository<CabDriver, Long>{
 
 	@Query("SELECT COUNT(*) FROM CabDriver a")
 	Long countDriver();
+	
+	@Query("SELECT a FROM CabDriver a WHERE a.driver_id=?1")
+	CabDriver getById(long driver_id);
 
 
 

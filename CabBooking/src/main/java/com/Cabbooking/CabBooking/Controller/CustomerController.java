@@ -35,6 +35,7 @@ import com.Cabbooking.CabBooking.Response.CustomResponseForNoUser;
 import com.Cabbooking.CabBooking.Response.CustomerResponseForInvalidLogin;
 import com.Cabbooking.CabBooking.Response.UserResponseForNoUser;
 import com.Cabbooking.CabBooking.Security.JwtUtils;
+import com.Cabbooking.CabBooking.Service.AdminService;
 import com.Cabbooking.CabBooking.Service.AuthService;
 import com.Cabbooking.CabBooking.Service.BookingCabService;
 import com.Cabbooking.CabBooking.Service.CabService;
@@ -73,6 +74,9 @@ public class CustomerController {
 	
 	@Autowired
 	TripService tripService;
+	
+	@Autowired
+	AdminService adminService;
 
 	
 	
@@ -146,6 +150,27 @@ public class CustomerController {
 			return new ResponseEntity<Object>(response,HttpStatus.OK);
 		}
 
+	//Get source location
+	@GetMapping("/getSource")
+	public ResponseEntity<Object> getSource(){
+		List<String> response = adminService.getSource();
+		return new ResponseEntity<Object>(response,HttpStatus.OK);
+	}
+	
+	//Get Destination location
+	@GetMapping("/getDestination")
+	public ResponseEntity<Object> getDestination(){
+		List<String> response = adminService.getDestination();
+		return new ResponseEntity<Object>(response,HttpStatus.OK);
+		}
+	
+	// Get Cab Type 
+	@GetMapping("/getCabTypes")
+	public ResponseEntity<Object> getCabTypes(){
+		List<String> response = adminService.getCabTypes();
+		return new ResponseEntity<Object>(response,HttpStatus.OK);
+		}
+
 	
 	// Create Booking Customer // Cab Book
 	@PostMapping("/bookCab/{email}")
@@ -169,10 +194,10 @@ public class CustomerController {
 
 	
 
-	//View Trip Details Customer Side // not running
+	//View Trip Details Customer Side 
 	 @GetMapping("/viewTrip/{id}")
 	 public ResponseEntity<Object> tripHistorySpecific(@PathVariable("id") long id){
-		 TripDetails trip = tripService.getById(id);
+		 TripDetails trip = tripService.getTripById(id);
 		 return new ResponseEntity<Object>(trip,HttpStatus.OK);
 	 }
 	

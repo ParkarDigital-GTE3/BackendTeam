@@ -16,4 +16,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long>{
 	@Query("SELECT a FROM Booking a WHERE a.status=0")
 	List<Booking> findBookingByStatus();
 
+	@Query("SELECT a FROM Booking a WHERE a.booking_id=?1")
+	Booking getBookingById(long id);
+
 }

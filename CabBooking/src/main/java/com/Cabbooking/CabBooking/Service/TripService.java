@@ -14,9 +14,6 @@ public interface TripService {
 
 	List<TripDetails> findAllTrips();
 
-	TripDetails getSpecificTrip(long id);
-
-	TripDetails getById(long id);
 
 	TripDetails createTrip(TripDetails trip);
 
@@ -31,6 +28,8 @@ public interface TripService {
 	Long fetchTodaysTotalEarning(String date);
 
 	List<LocationWiseTrips> CountTrip(String source, String dest);
+
+	TripDetails getTripById(long trip_id);
 
 
 }

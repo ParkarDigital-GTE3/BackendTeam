@@ -42,8 +42,8 @@ public class BookingCabServiceImpl implements BookingCabService {
 	}
 
 	@Override
-	public Booking getById(long id) {
-		return bookingRepository.getById(id);
+	public Booking getBookingById(long id) {
+		return bookingRepository.getBookingById(id);
 	}
 
 
