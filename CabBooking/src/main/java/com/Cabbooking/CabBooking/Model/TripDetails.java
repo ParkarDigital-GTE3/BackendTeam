@@ -23,6 +23,7 @@ public class TripDetails {
 	private String driverName;
 	private String driverEmail;
 	private String customerEmail;
+	private long booking_id;
 	private String source;
 	private String destination;
 	private long totalDistance;
@@ -36,20 +37,21 @@ public class TripDetails {
 	@Override
 	public String toString() {
 		return "TripDetails [trip_id=" + trip_id + ", customerName=" + customerName + ", driverName=" + driverName
-				+ ", driverEmail=" + driverEmail + ", customerEmail=" + customerEmail + ", source=" + source
-				+ ", destination=" + destination + ", totalDistance=" + totalDistance + ", cabType=" + cabType
-				+ ", cabCapacity=" + cabCapacity + ", cabRegistrationNo=" + cabRegistrationNo + ", ratesPerKm="
-				+ ratesPerKm + ", tripDate=" + tripDate + ", totalFare=" + totalFare + "]";
+				+ ", driverEmail=" + driverEmail + ", customerEmail=" + customerEmail + ", booking_id=" + booking_id
+				+ ", source=" + source + ", destination=" + destination + ", totalDistance=" + totalDistance
+				+ ", cabType=" + cabType + ", cabCapacity=" + cabCapacity + ", cabRegistrationNo=" + cabRegistrationNo
+				+ ", ratesPerKm=" + ratesPerKm + ", tripDate=" + tripDate + ", totalFare=" + totalFare + "]";
 	}
 
 	public TripDetails(long trip_id, String customerName, String driverName, String driverEmail, String customerEmail,
-			String source, String destination, long totalDistance, String cabType, String cabCapacity,
+			long booking_id, String source, String destination, long totalDistance, String cabType, String cabCapacity,
 			String cabRegistrationNo, long ratesPerKm, String tripDate, long totalFare) {
 		this.trip_id = trip_id;
 		this.customerName = customerName;
 		this.driverName = driverName;
 		this.driverEmail = driverEmail;
 		this.customerEmail = customerEmail;
+		this.booking_id = booking_id;
 		this.source = source;
 		this.destination = destination;
 		this.totalDistance = totalDistance;
@@ -99,6 +101,14 @@ public class TripDetails {
 
 	public void setCustomerEmail(String customerEmail) {
 		this.customerEmail = customerEmail;
+	}
+
+	public long getBooking_id() {
+		return booking_id;
+	}
+
+	public void setBooking_id(long booking_id) {
+		this.booking_id = booking_id;
 	}
 
 	public String getSource() {

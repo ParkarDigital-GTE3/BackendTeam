@@ -44,7 +44,7 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public long fetchTotalDistanceByLocations(String source, String destination) {
+	public Long fetchTotalDistanceByLocations(String source, String destination) {
 		return locationRepository.fetchTotalDistance(source, destination);
 	}
 
@@ -70,6 +70,12 @@ public class AdminServiceImpl implements AdminService{
 	public List<String> getCabTypes() {
 
 		return carTypesAndRatesRepo.getCabTypes();
+	}
+
+	@Override
+	public RatesAndTypes fetchRatesAndCapacity(String cabType) {
+	
+		return carTypesAndRatesRepo.fetchRatesAndCapacity(cabType);
 	}
 
 

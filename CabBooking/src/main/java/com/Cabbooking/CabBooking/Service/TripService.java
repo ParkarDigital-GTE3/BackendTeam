@@ -35,5 +35,7 @@ public interface TripService {
 
 	List<LocationWiseTrips> CountTripByLocation();
 
+	TripDetails getTripByBookingId(long booking_id);
+
 
 }

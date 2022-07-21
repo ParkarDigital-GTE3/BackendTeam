@@ -39,6 +39,9 @@ public interface TripRepository extends JpaRepository<TripDetails, Long> {
 	@Query("SELECT source,destination,COUNT(*) FROM TripDetails GROUP BY source,destination")
 	List<LocationWiseTrips> CountTripByLocation();
 
+	@Query("SELECT a FROM TripDetails a WHERE booking_id=?1")
+	TripDetails getTripByBookingId(long booking_id);
+
 /*	
  * 
 	@Query("SELECT SUM(totalfare) FROM TripDetails a")

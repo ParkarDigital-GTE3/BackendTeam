@@ -12,7 +12,7 @@ import com.Cabbooking.CabBooking.Model.Location;
 public interface LocationRepository extends JpaRepository<Location, Long> {
 
 	@Query("SELECT totalDistance FROM Location a WHERE a.source=?1 AND a.destination=?2")
-	long fetchTotalDistance(String source, String destination);
+	Long fetchTotalDistance(String source, String destination);
 
 	@Query("SELECT DISTINCT(source) FROM Location")
 	List<String> getSource();

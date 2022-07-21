@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.Cabbooking.CabBooking.Model.Booking;
 import com.Cabbooking.CabBooking.Model.CabDriver;
 import com.Cabbooking.CabBooking.Model.Customer;
+import com.Cabbooking.CabBooking.Model.Location;
+import com.Cabbooking.CabBooking.Model.RatesAndTypes;
 import com.Cabbooking.CabBooking.Model.TripDetails;
 import com.Cabbooking.CabBooking.Repository.BookingRepository;
 import com.Cabbooking.CabBooking.Repository.CustomerRepository;
@@ -29,12 +31,15 @@ import com.Cabbooking.CabBooking.Repository.DriverRepository;
 import com.Cabbooking.CabBooking.Repository.TripRepository;
 import com.Cabbooking.CabBooking.Request.CustomerRequest;
 import com.Cabbooking.CabBooking.Request.EmailOtpRequest;
+import com.Cabbooking.CabBooking.Request.SrcDestTypes;
 import com.Cabbooking.CabBooking.Request.TripRequest;
 import com.Cabbooking.CabBooking.Request.UpdatePasswordRequest;
 import com.Cabbooking.CabBooking.Request.UpdateUserRequest;
 import com.Cabbooking.CabBooking.Response.BookingResponse;
 import com.Cabbooking.CabBooking.Response.CustomResponseForNoUser;
 import com.Cabbooking.CabBooking.Response.CustomerResponseForInvalidLogin;
+import com.Cabbooking.CabBooking.Response.DriverDetailsResponse;
+import com.Cabbooking.CabBooking.Response.TotalRatesAndCapacityResponse;
 import com.Cabbooking.CabBooking.Response.UserResponseForNoUser;
 import com.Cabbooking.CabBooking.Security.JwtUtils;
 import com.Cabbooking.CabBooking.Service.AdminService;
@@ -172,6 +177,16 @@ public class CustomerController {
 		List<String> response = adminService.getCabTypes();
 		return new ResponseEntity<Object>(response,HttpStatus.OK);
 		}
+	
+	//Set Cab Type
+	@PostMapping("/setCabTypegetRates")
+	public ResponseEntity<Object> setCabTypegetRates(@RequestBody SrcDestTypes srcDestTypes){
+		Long fetchTotalDistance = adminService.fetchTotalDistanceByLocations(srcDestTypes.getSource(), srcDestTypes.getDestination());
+		RatesAndTypes ratesAndCapacity = adminService.fetchRatesAndCapacity(srcDestTypes.getCabType());
+		Long totalRate = fetchTotalDistance*(ratesAndCapacity.getRatekm());
+		TotalRatesAndCapacityResponse response = new TotalRatesAndCapacityResponse(ratesAndCapacity.getCapacity(), totalRate);
+		return new ResponseEntity<Object>(response,HttpStatus.OK);
+	}
 
 	
 	// Create Booking Customer // Cab Book
@@ -184,7 +199,7 @@ public class CustomerController {
 //				bookingDetails.setCustContactNo(customer.getContactNo());
 				bookingDetails.setStatus("0");
 				Booking result = bookingCabService.bookCab(bookingDetails);
-				BookingResponse response = new BookingResponse(new Date(),"Booking Confirmed","200",result,customer.getName(),customer.getContactNo());
+				BookingResponse response = new BookingResponse(new Date(),"Booking Confirmed","200",result,customer.getName(),customer.getContactNo(),result.getBooking_id());
 				return new ResponseEntity<Object>(response,HttpStatus.CREATED);	
 
 			}
@@ -194,17 +209,38 @@ public class CustomerController {
 		}
 
 	
+	
+	//CHECK IF BOOKING ACCEPTED BY DRIVER
+	@PostMapping("/checkBookingStatus")
+	public ResponseEntity<Object> checkBookingStatus(@RequestBody BookingResponse bookingResponse){
+		Booking booking = bookingCabService.getBookingById(bookingResponse.getBooking_id());
+		if((booking.getStatus()).equals("1")) {
+			Long driverId = booking.getDriverId();
+			CabDriver fetchDriver = driverService.getById(driverId);
+			DriverDetailsResponse response = new DriverDetailsResponse(new Date(),"Driver Accepted Request!!Driver Arriving","200",fetchDriver);
+			return new ResponseEntity<Object>(response,HttpStatus.OK);
+		}
+		UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"Searching For Driver!!!Booking Not Accepted!","409");
+		return new ResponseEntity<Object>(response,HttpStatus.OK);
 
-	//View Trip Details Customer Side 
+	}
+	
+	
+	//View Trip Details Customer Side  After Complete Trip
 	 @PostMapping("/viewTrip")
-	 public ResponseEntity<Object> tripHistorySpecific(@RequestBody TripRequest tripRequest){
-		 TripDetails trip = tripService.getTripById(tripRequest.getId());
+	 public ResponseEntity<Object> viewTrip(@RequestBody BookingResponse bookingResponse){
+		 TripDetails trip = tripService.getTripByBookingId(bookingResponse.getBooking_id());
+		 if(trip == null) {
+			 UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"Trip Not Completed!!!! OR Trip Not Found!!","409");
+			 return new ResponseEntity<Object>(response,HttpStatus.CONFLICT);
+		 }
+		 
 		 return new ResponseEntity<Object>(trip,HttpStatus.OK);
 	 }
 	
 	// View Trip History Customer
-	 @PostMapping("/viewCustomerTripHistory")
-		public  ResponseEntity<Object> tripHistoryCustomer(@RequestBody TripRequest tripRequest){
+	@PostMapping("/viewCustomerTripHistory")
+	public  ResponseEntity<Object> tripHistoryCustomer(@RequestBody TripRequest tripRequest){
 		 Customer customer = customerService.fetchCustomerByEmail(tripRequest.getEmail());
 		 log.info("After fetching customer "+customer);
 			if(customer==null) {
@@ -216,5 +252,11 @@ public class CustomerController {
 			}
 
 
+	//View Trip Details Customer Specific Trip
+	@PostMapping("/viewSpecificTrip")
+	public ResponseEntity<Object> viewSpecificTrip(@RequestBody TripRequest request){
+			TripDetails trip = tripService.getTripById(request.getId());
+			return new ResponseEntity<Object>(trip,HttpStatus.OK);
+		 }
 
 }

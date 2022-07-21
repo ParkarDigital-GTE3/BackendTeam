@@ -200,16 +200,19 @@ public class AdminController {
 	 
 	//Count Drivers
 	@GetMapping("/DriverCount")
-	public Long countDriver()
+	public ResponseEntity<Object> countDriver()
 	{
-		return driverService.countDriver();	
+		Long response =  driverService.countDriver();	
+		return new ResponseEntity<Object>(response,HttpStatus.OK);
 	}
 		
 	 // Count customers
 	@GetMapping("/CustomerCount")
-	public Long countCustomers()
+	public ResponseEntity<Object> countCustomers()
 	{
-		return customerService.countCustomer();	
+		 
+		Long response =  customerService.countCustomer();	
+		return new ResponseEntity<Object>(response,HttpStatus.OK);
 	}
 	 
 	
@@ -221,14 +224,14 @@ public class AdminController {
 		return new ResponseEntity<Object>(response,HttpStatus.OK);
 	}
 	 
-/*	 // View Trip Location wise //
+	 // View Trip Location wise //
 	@GetMapping("/showTripsLocationwise")
 	public ResponseEntity<Object> CountTripByLocation() {
 	 List<LocationWiseTrips> response = tripService.CountTripByLocation();
 	return new ResponseEntity<Object>(response,HttpStatus.OK);
 	}
 	 
-*/
+
 	 
 
 }

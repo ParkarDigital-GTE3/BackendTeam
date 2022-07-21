@@ -12,15 +12,27 @@ public class BookingResponse {
 	 private Booking booking;
 	 private String customerName;
 	 private String customerContactNo;
+	 private long booking_id;
 	
+	public long getBooking_id() {
+		return booking_id;
+	}
+
+	public void setBooking_id(long booking_id) {
+		this.booking_id = booking_id;
+	}
+
+	
+
 	public BookingResponse(Date timestamp, String message, String status, Booking booking, String customerName,
-			String customerContactNo) {
+			String customerContactNo, long booking_id) {
 		this.timestamp = timestamp;
 		this.message = message;
 		this.status = status;
 		this.booking = booking;
 		this.customerName = customerName;
 		this.customerContactNo = customerContactNo;
+		this.booking_id = booking_id;
 	}
 
 	public Date getTimestamp() {

@@ -15,7 +15,7 @@ public interface AdminService {
 
 	Admin getByUsername(String userName);
 
-	long fetchTotalDistanceByLocations(String source, String destination);
+	Long fetchTotalDistanceByLocations(String source, String destination);
 
 	long fetchRatesPerKmByCab(String cabType, String cabCapacity);
 
@@ -24,6 +24,8 @@ public interface AdminService {
 	List<String> getDestination();
 
 	List<String> getCabTypes();
+
+	RatesAndTypes fetchRatesAndCapacity(String cabType);
 
 
 

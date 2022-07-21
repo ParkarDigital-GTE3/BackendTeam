@@ -91,6 +91,12 @@ public class TripServiceImpl implements TripService {
 
 		return tripRepository.CountTripByLocation();
 	}
+
+	@Override
+	public TripDetails getTripByBookingId(long booking_id) {
+		// TODO Auto-generated method stub
+		return tripRepository.getTripByBookingId(booking_id);
+	}
 	
 
 }

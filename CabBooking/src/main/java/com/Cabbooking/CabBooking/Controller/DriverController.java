@@ -174,18 +174,18 @@ public class DriverController {
 	
 
 	//Start Trip, Add details to trip
-	@PostMapping("/startTrip/{booking_id}")
-	public ResponseEntity<Object> startTrip(@PathVariable("booking_id") long id,@RequestBody TripDetails trip){
+	@PostMapping("/CompleteTrip")
+	public ResponseEntity<Object> startTrip(@RequestBody TripDetails trip){
 			log.info("**************In Start Trip*********");
-			Booking fetchBooking = bookingCabService.getBookingById(id);
+			Booking fetchBooking = bookingCabService.getBookingById(trip.getBooking_id());
 			log.info("after fetchbooking"+fetchBooking);
 			System.out.println(trip.getDriverEmail());
 			CabDriver driver = driverService.fetchDriverByEmail(trip.getDriverEmail());
 			log.info("After driver fetch"+driver);
-			System.out.println(trip.getCustomerEmail());
-			Customer customer = customerService.fetchCustomerByEmail(trip.getCustomerEmail());
+			System.out.println(fetchBooking.getCustomerEmail());
+			Customer customer = customerService.fetchCustomerByEmail(fetchBooking.getCustomerEmail());
 			log.info("After customer fetch"+customer);
-			
+			trip.setCustomerEmail(customer.getEmail());
 			trip.setCustomerName(customer.getName());
 			log.info("After customerName fetch"+customer.getName());
 			trip.setDriverName(driver.getName());
@@ -227,23 +227,23 @@ public class DriverController {
 		}
 
 		
-
+/*
 	// Complete Trip View Trip Details/
 	@PostMapping("/CompleteTrip")
 	public ResponseEntity<Object> completeTrip(@RequestBody TripDetails trip){
 		log.info("Trip Id"+trip.getTrip_id());
 		TripDetails completeTrip = tripService.getTripById(trip.getTrip_id());
 		log.info("Trip Id"+completeTrip);
-/*		if(trip==null) {
+		if(trip==null) {
 			UserResponseForNoUser response = new UserResponseForNoUser(new Date(),"Trip Not Found","409");
 			return new ResponseEntity<Object>(response,HttpStatus.CONFLICT);
-		}*/
+		}
 		
 		return new ResponseEntity<Object>(completeTrip,HttpStatus.OK);
 		
 	}
 	
-
+*/
 	// View Trip History Driver
 	@PostMapping("/viewTripHistory")
 	public  ResponseEntity<Object> TripHistoryDriver(@RequestBody DriverRequest driverRequest){
