@@ -1,6 +1,8 @@
 package com.Cabbooking.CabBooking.ServiceImpl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,13 +83,13 @@ public class TripServiceImpl implements TripService {
 	}
 
 	@Override
-	public List<TripDateWiseRequest> countTripByDate() {
+	public List<String> countTripByDate() {
 		
 		return tripRepository.countTripByDate();
 	}
 
 	@Override
-	public List<LocationWiseTrips> CountTripByLocation() {
+	public List<String> CountTripByLocation() {
 
 		return tripRepository.CountTripByLocation();
 	}

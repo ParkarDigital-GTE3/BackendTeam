@@ -1,6 +1,8 @@
 package com.Cabbooking.CabBooking.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.Cabbooking.CabBooking.Model.Booking;
 import com.Cabbooking.CabBooking.Model.TripDetails;
@@ -31,9 +33,9 @@ public interface TripService {
 
 	TripDetails getTripById(long trip_id);
 
-	List<TripDateWiseRequest> countTripByDate();
+	List<String> countTripByDate();
 
-	List<LocationWiseTrips> CountTripByLocation();
+	List<String> CountTripByLocation();
 
 	TripDetails getTripByBookingId(long booking_id);
 

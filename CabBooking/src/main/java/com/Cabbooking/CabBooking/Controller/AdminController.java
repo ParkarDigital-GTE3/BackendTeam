@@ -1,11 +1,14 @@
 package com.Cabbooking.CabBooking.Controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +46,7 @@ import com.Cabbooking.CabBooking.Service.TripService;
 
 @RestController
 @RequestMapping("/admin")
+@CrossOrigin
 public class AdminController {
 	
 	@Autowired
@@ -178,21 +182,6 @@ public class AdminController {
 	 }
 
 
-	 // View Earning Adminside
-	 @GetMapping("/totalEarning")
-	public ResponseEntity<Object> totalfare() {
-		 Long resonse = tripService.fetchTotalEarning();
-		 return new ResponseEntity<Object>(resonse,HttpStatus.OK);
-		}	
-	 
-	 //View Todays Earning 
-	@PostMapping("/todayTotalsEarning")
-	public ResponseEntity<Object> todayTotalsEarning(@RequestBody TripRequest tripRequest) {
-		Long response = tripService.fetchTodaysTotalEarning(tripRequest.getDate()); 
-		return new ResponseEntity<Object>(response,HttpStatus.OK);
-		}
-
-
 	 
 	 
 	 
@@ -215,19 +204,33 @@ public class AdminController {
 		return new ResponseEntity<Object>(response,HttpStatus.OK);
 	}
 	 
+
+	 // View Earning Adminside
+	 @GetMapping("/totalEarning")
+	public ResponseEntity<Object> totalfare() {
+		 Long resonse = tripService.fetchTotalEarning();
+		 return new ResponseEntity<Object>(resonse,HttpStatus.OK);
+		}	
+	 
+	 //View Todays Earning 
+	@PostMapping("/todayTotalsEarning")
+	public ResponseEntity<Object> todayTotalsEarning(@RequestBody TripRequest tripRequest) {
+		Long response = tripService.fetchTodaysTotalEarning(tripRequest.getDate()); 
+		return new ResponseEntity<Object>(response,HttpStatus.OK);
+		}
 	
 	
 	 //View Trips Date wise //
 	@GetMapping("/viewTripDateWise")
 	public ResponseEntity<Object> viewTripDateWise(){
-		List<TripDateWiseRequest> response = tripService.countTripByDate();
+		List<String> response = tripService.countTripByDate();
 		return new ResponseEntity<Object>(response,HttpStatus.OK);
 	}
 	 
 	 // View Trip Location wise //
 	@GetMapping("/showTripsLocationwise")
 	public ResponseEntity<Object> CountTripByLocation() {
-	 List<LocationWiseTrips> response = tripService.CountTripByLocation();
+	 List<String> response = tripService.CountTripByLocation();
 	return new ResponseEntity<Object>(response,HttpStatus.OK);
 	}
 	 

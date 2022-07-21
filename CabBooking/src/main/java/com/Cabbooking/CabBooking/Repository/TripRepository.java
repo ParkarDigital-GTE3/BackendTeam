@@ -1,6 +1,8 @@
 package com.Cabbooking.CabBooking.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -34,10 +36,10 @@ public interface TripRepository extends JpaRepository<TripDetails, Long> {
 	TripDetails getTripById(long trip_id);
 
 	@Query("SELECT DISTINCT(tripDate),COUNT(DISTINCT(tripDate)) FROM TripDetails")
-	List<TripDateWiseRequest> countTripByDate();
+	List<String> countTripByDate();
 	
 	@Query("SELECT source,destination,COUNT(*) FROM TripDetails GROUP BY source,destination")
-	List<LocationWiseTrips> CountTripByLocation();
+	List<String> CountTripByLocation();
 
 	@Query("SELECT a FROM TripDetails a WHERE booking_id=?1")
 	TripDetails getTripByBookingId(long booking_id);

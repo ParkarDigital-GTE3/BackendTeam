@@ -30,7 +30,7 @@ import com.Cabbooking.CabBooking.Service.AuthService;
 
 @RestController
 @RequestMapping("/register")
-
+@CrossOrigin
 public class AuthController
 {
 	

@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,7 +54,8 @@ import com.Cabbooking.CabBooking.Service.TripService;
 
 
 @RestController
-@RequestMapping("/Customer")
+@RequestMapping("/login/customer")
+@CrossOrigin
 public class CustomerController {
 	private static final Logger log = LoggerFactory.getLogger(DriverController.class);
 	
