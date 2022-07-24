@@ -26,7 +26,7 @@ import com.AspasCabDriver.Driver.Service.DriverService;
 
 
 @RestController
-@RequestMapping("/login/driverSetCab")
+@RequestMapping("/login/driver/SetCab")
 @CrossOrigin
 public class SetCabProfileController {
 	
