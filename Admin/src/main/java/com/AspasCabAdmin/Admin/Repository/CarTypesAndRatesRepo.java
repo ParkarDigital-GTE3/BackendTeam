@@ -20,6 +20,9 @@ public interface CarTypesAndRatesRepo extends JpaRepository<RatesAndTypes, Long>
 	@Query("SELECT capacity,ratekm FROM RatesAndTypes a WHERE a.type=?1")
 	RatesAndTypes fetchRatesAndCapacity(String cabType);
 
+	@Query("SELECT a FROM RatesAndTypes a WHERE a.type=?1 AND a.capacity=?2")
+	RatesAndTypes fetchCabBytypeAndCapacity(String type, String capacity);
+
 	
 
 }

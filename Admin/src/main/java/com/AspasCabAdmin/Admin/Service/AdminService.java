@@ -46,4 +46,14 @@ public interface AdminService {
 
 	TripDetails getTripById(long id);
 
+	Location fetchLocationBySrcAndDest(String source, String destination);
+
+	RatesAndTypes fetchCabBytypeAndCapacity(String type, String capacity);
+
+	List<Location> fetchAllLocations();
+
+	List<RatesAndTypes> fetchAllTypes();
+
+	CabDriver fetchDriverById(long driver_id);
+
 }

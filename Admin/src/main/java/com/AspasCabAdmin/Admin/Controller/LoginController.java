@@ -56,7 +56,7 @@ public class LoginController {
 
 				AdminDetailsResponse response = new AdminDetailsResponse(new Date(), "Customer Created Succesfully", "200", admin);
 
-				return new ResponseEntity<Object>(response, HttpStatus.CREATED);
+				return new ResponseEntity<Object>(response, HttpStatus.OK);
 			}
 			else
 			{

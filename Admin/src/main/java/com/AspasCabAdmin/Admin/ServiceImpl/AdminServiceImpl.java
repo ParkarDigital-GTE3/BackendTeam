@@ -132,5 +132,35 @@ public class AdminServiceImpl implements AdminService {
 		return tripRepository.getTripById(id);
 	}
 
+	@Override
+	public Location fetchLocationBySrcAndDest(String source, String destination) {
+		
+		return locationRepository.fetchLocationBySrcAndDest(source, destination);
+	}
+
+	@Override
+	public RatesAndTypes fetchCabBytypeAndCapacity(String type, String capacity) {
+		// TODO Auto-generated method stub
+		return carTypesAndRatesRepo.fetchCabBytypeAndCapacity(type,capacity);
+	}
+
+	@Override
+	public List<Location> fetchAllLocations() {
+	
+		return locationRepository.findAll();
+	}
+
+	@Override
+	public List<RatesAndTypes> fetchAllTypes() {
+		
+		return carTypesAndRatesRepo.findAll();
+	}
+
+	@Override
+	public CabDriver fetchDriverById(long driver_id) {
+		
+		return driverRepository.getById(driver_id);
+	}
+
 
 }

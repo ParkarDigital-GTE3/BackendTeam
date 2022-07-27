@@ -22,4 +22,7 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 	@Query("SELECT DISTINCT(destination) FROM Location")
 	List<String> getDestination();
 
+	@Query("SELECT a FROM Location a WHERE a.source=?1 AND a.destination=?2")
+	Location fetchLocationBySrcAndDest(String source, String destination);
+
 }

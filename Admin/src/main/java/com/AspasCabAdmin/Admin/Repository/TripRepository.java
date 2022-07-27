@@ -32,10 +32,10 @@ public interface TripRepository extends JpaRepository<TripDetails, Long> {
 	@Query("SELECT a FROM TripDetails a WHERE a.trip_id =?1")
 	TripDetails getTripById(long trip_id);
 
-	@Query("SELECT DISTINCT(tripDate),COUNT(DISTINCT(tripDate)) FROM TripDetails")
+	@Query("SELECT DISTINCT(tripDate),COUNT(*) FROM TripDetails a GROUP BY tripDate")
 	List<String> countTripByDate();
 	
-	@Query("SELECT source,destination,COUNT(*) FROM TripDetails GROUP BY source,destination")
+	@Query("SELECT CONCAT(source,'-',destination),COUNT(*) FROM TripDetails GROUP BY source,destination")
 	List<String> CountTripByLocation();
 
 	@Query("SELECT a FROM TripDetails a WHERE booking_id=?1")

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 @Entity
 public class TripDetails {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long trip_id;
