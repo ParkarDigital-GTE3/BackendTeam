@@ -31,10 +31,13 @@ import com.AspasCabCustomer.Customer.Request.TripRequest;
 import com.AspasCabCustomer.Customer.Request.UpdatePasswordRequest;
 import com.AspasCabCustomer.Customer.Request.UpdateUserRequest;
 import com.AspasCabCustomer.Customer.Response.BookingResponse;
+import com.AspasCabCustomer.Customer.Response.CustomHistoryResponse;
 import com.AspasCabCustomer.Customer.Response.CustomResponse;
 import com.AspasCabCustomer.Customer.Response.CustomResponseForNoUser;
+import com.AspasCabCustomer.Customer.Response.CustomerDetailsResponse;
 import com.AspasCabCustomer.Customer.Response.CustomerResponseForInvalidLogin;
 import com.AspasCabCustomer.Customer.Response.DriverDetailsResponse;
+import com.AspasCabCustomer.Customer.Response.ResponseForTrip;
 import com.AspasCabCustomer.Customer.Response.TotalRatesAndCapacityResponse;
 import com.AspasCabCustomer.Customer.Service.AuthService;
 import com.AspasCabCustomer.Customer.Service.BookingCabService;
@@ -83,8 +86,8 @@ public class CustomerController {
 				CustomResponseForNoUser response = new CustomResponseForNoUser(new Date(),"Error in authentication","409");
 				return new ResponseEntity<Object>(response,HttpStatus.OK);
 			}
-		
-			return new ResponseEntity<Object>(fetchCustomer,HttpStatus.OK);
+			CustomerDetailsResponse response = new CustomerDetailsResponse(new Date(), "Fetched Successfully", "200", fetchCustomer);
+			return new ResponseEntity<Object>(response,HttpStatus.OK);
 		}
 	
 	//Update Customer Password
@@ -172,9 +175,10 @@ public class CustomerController {
 	@PostMapping("/setCabTypegetRates")
 	public ResponseEntity<Object> setCabTypegetRates(@RequestBody SrcDestTypes srcDestTypes){
 		Long fetchTotalDistance = customerService.fetchTotalDistanceByLocations(srcDestTypes.getSource(), srcDestTypes.getDestination());
-		RatesAndTypes ratesAndCapacity = customerService.fetchRatesAndCapacity(srcDestTypes.getCabType());
-		Long totalRate = fetchTotalDistance*(ratesAndCapacity.getRatekm());
-		TotalRatesAndCapacityResponse response = new TotalRatesAndCapacityResponse(ratesAndCapacity.getCapacity(), totalRate);
+		Long ratekm = customerService.fetchRates(srcDestTypes.getCabType());
+		String capacity = customerService.fetchCapcity(srcDestTypes.getCabType());
+		Long totalRate = fetchTotalDistance*(ratekm);
+		TotalRatesAndCapacityResponse response = new TotalRatesAndCapacityResponse("200",capacity, totalRate);
 		return new ResponseEntity<Object>(response,HttpStatus.OK);
 	}
 
@@ -224,8 +228,8 @@ public class CustomerController {
 			 CustomResponse response = new CustomResponse(new Date(),"Trip Not Completed!!!! OR Trip Not Found!!","409");
 			 return new ResponseEntity<Object>(response,HttpStatus.CONFLICT);
 		 }
-		 
-		 return new ResponseEntity<Object>(trip,HttpStatus.OK);
+		 ResponseForTrip response = new ResponseForTrip(new Date(),"Trip Completed!!!","200",trip);
+		 return new ResponseEntity<Object>(response,HttpStatus.OK);
 	 }
 	
 	// View Trip History Customer
@@ -237,7 +241,8 @@ public class CustomerController {
 				CustomResponse response = new CustomResponse(new Date(),"Customer not found","409");
 				return new ResponseEntity<Object>(response,HttpStatus.OK);
 			}
-			List<TripDetails> response = tripService.fetchTripByCustomerEmail(tripRequest.getEmail());
+			List<TripDetails> trips = tripService.fetchTripByCustomerEmail(tripRequest.getEmail());
+			CustomHistoryResponse response = new CustomHistoryResponse("200",trips);
 			return new ResponseEntity<Object>(response,HttpStatus.OK);
 			}
 
@@ -246,7 +251,8 @@ public class CustomerController {
 	@PostMapping("/viewSpecificTrip")
 	public ResponseEntity<Object> viewSpecificTrip(@RequestBody TripRequest request){
 			TripDetails trip = tripService.getTripById(request.getId());
-			return new ResponseEntity<Object>(trip,HttpStatus.OK);
+			ResponseForTrip response = new ResponseForTrip(new Date(),"Fetched Succesfully!!!","200",trip);
+			return new ResponseEntity<Object>(response,HttpStatus.OK);
 		 }
 
 }

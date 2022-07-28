@@ -42,7 +42,7 @@ public class BookingCabServiceImpl implements BookingCabService {
 	@Override
 	public List<Booking> findBookingByStatus() {
 
-		return bookingRepository.findAll();
+		return bookingRepository.findBookingByStatus();
 	}
 
 	@Override

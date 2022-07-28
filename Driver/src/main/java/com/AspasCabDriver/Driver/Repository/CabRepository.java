@@ -23,5 +23,9 @@ public interface CabRepository extends JpaRepository<CabDetails, Long>{
     @Query("SELECT a FROM CabDetails a WHERE a.cabInsuranceNo=?1")
 	CabDetails fetchCabByInsuranceNo(String cabInsuranceNo);
 
+    
+    @Query("SELECT a FROM CabDetails a WHERE a.driverEmail=?1")
+	CabDetails fetchCabByEmail(String driverEmail);
+
 
 }

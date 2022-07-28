@@ -24,11 +24,17 @@ import com.AspasCabDriver.Driver.Model.Booking;
 import com.AspasCabDriver.Driver.Model.CabDriver;
 import com.AspasCabDriver.Driver.Model.Customer;
 import com.AspasCabDriver.Driver.Model.TripDetails;
+import com.AspasCabDriver.Driver.Request.AcceptBooking;
 import com.AspasCabDriver.Driver.Request.DriverRequest;
 import com.AspasCabDriver.Driver.Request.UpdatePasswordRequest;
 import com.AspasCabDriver.Driver.Request.UpdateUserRequest;
+import com.AspasCabDriver.Driver.Response.AcceptBookingResponse;
+import com.AspasCabDriver.Driver.Response.CustomBookingResponse;
+import com.AspasCabDriver.Driver.Response.CustomHistoryResponse;
 import com.AspasCabDriver.Driver.Response.CustomResponse;
 import com.AspasCabDriver.Driver.Response.CustomerResponseForInvalidLogin;
+import com.AspasCabDriver.Driver.Response.DriverDetailsResponse;
+import com.AspasCabDriver.Driver.Response.TripResponse;
 import com.AspasCabDriver.Driver.Service.AuthService;
 import com.AspasCabDriver.Driver.Service.BookingCabService;
 import com.AspasCabDriver.Driver.Service.DriverService;
@@ -69,8 +75,8 @@ public class DriverController {
 				CustomResponse response = new CustomResponse(new Date(),"Error in authentication","409");
 				return new ResponseEntity<Object>(response,HttpStatus.OK);
 			}
-		
-			return new ResponseEntity<Object>(fetchDriver,HttpStatus.OK);
+			DriverDetailsResponse response = new DriverDetailsResponse(new Date(), "Fetched Successfully", "200", fetchDriver);
+			return new ResponseEntity<Object>(response,HttpStatus.OK);
 		}
 
 	
@@ -137,7 +143,8 @@ public class DriverController {
 	//Get Bookings Driver // View Booking Request
 	@GetMapping("/getBookings")
 	public ResponseEntity<Object> getBookings(){
-		List<Booking> response = bookingCabService.findBookingByStatus();
+		List<Booking> bookings = bookingCabService.findBookingByStatus();
+		CustomBookingResponse response = new CustomBookingResponse("200",bookings);
 		return new ResponseEntity<Object>(response,HttpStatus.OK);
 	}
 	
@@ -151,20 +158,20 @@ public class DriverController {
 	
 	
 	//update booking status as closed //Accept Booking By Driver
-	@PostMapping("/acceptBooking/{booking_id}")
-	public ResponseEntity<Object> updateBookingStatus(@PathVariable("booking_id") long id,@RequestBody UpdateUserRequest email){
-		Booking fetchBooking = bookingCabService.getBookingById(id);
+	@PostMapping("/acceptBooking")
+	public ResponseEntity<Object> updateBookingStatus(@RequestBody AcceptBooking request){
+		Booking fetchBooking = bookingCabService.getBookingById(request.getId());
 		
 		if(fetchBooking==null) {
 			CustomResponse response =  new CustomResponse(new Date(),"Booking does not Exists!!","409");
 			return new ResponseEntity<Object>(response,HttpStatus.CONFLICT);
 		}
-		CabDriver driver = authService.fetchDriverByEmail(email.getEmail());
+		CabDriver driver = authService.fetchDriverByEmail(request.getEmail());
 		long driver_id = driver.getDriver_id();
 		fetchBooking.setDriverId(driver_id);
-		Booking response = bookingCabService.updateBooking(id);
-		
-		return new ResponseEntity<Object>(response,HttpStatus.ACCEPTED);
+		Booking booking = bookingCabService.updateBooking(request.getId());
+		AcceptBookingResponse response = new AcceptBookingResponse("200",booking); 
+		return new ResponseEntity<Object>(response,HttpStatus.OK);
 	}
 
 	
@@ -217,8 +224,8 @@ public class DriverController {
 			
 			trip.setTotalFare(totalDist*ratesKm);
 			log.info("After Set Total Fare fetch"+totalDist*ratesKm);
-			TripDetails response = tripService.createTrip(trip);
-
+			TripDetails tripDetails = tripService.createTrip(trip);
+			TripResponse response = new TripResponse("200",tripDetails); 
 			return new ResponseEntity<Object>(response,HttpStatus.ACCEPTED);
 		}
 
@@ -248,7 +255,8 @@ public class DriverController {
 			CustomResponse response = new CustomResponse(new Date(),"driver not found","409");
 			return new ResponseEntity<Object>(response,HttpStatus.OK);
 		}
-		List<TripDetails> response = tripService.fetchTripByDriverEmail(driverRequest.getEmail());
+		List<TripDetails> trips = tripService.fetchTripByDriverEmail(driverRequest.getEmail());
+		CustomHistoryResponse response = new CustomHistoryResponse("200",trips);
 		return new ResponseEntity<Object>(response,HttpStatus.OK);
 		}
 		
@@ -257,7 +265,11 @@ public class DriverController {
 	@PostMapping("/viewTrip")
 	public ResponseEntity<Object> tripHistorySpecific(@RequestBody DriverRequest driverRequest){
 		 TripDetails trip = tripService.getTripById(driverRequest.getId());
-		 return new ResponseEntity<Object>(trip,HttpStatus.OK);
+		
+		 
+		 TripResponse response = new TripResponse("200",trip);
+		 
+		 return new ResponseEntity<Object>(response,HttpStatus.OK);
 	 }
 
 

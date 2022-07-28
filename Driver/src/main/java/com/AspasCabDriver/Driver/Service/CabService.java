@@ -21,5 +21,7 @@ public interface CabService {
 
 	CabDetails fetchCabByInsuranceNo(String cabInsuranceNo);
 
+	CabDetails fetchCabByEmail(String driverEmail);
+
 
 }

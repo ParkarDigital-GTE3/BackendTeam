@@ -60,6 +60,12 @@ public class CabServiceImpl implements CabService{
 	
 		return cabRepository.fetchCabByInsuranceNo(cabInsuranceNo);
 	}
+
+	@Override
+	public CabDetails fetchCabByEmail(String driverEmail) {
+		// TODO Auto-generated method stub
+		return cabRepository.fetchCabByEmail(driverEmail);
+	}
 	
 
 }

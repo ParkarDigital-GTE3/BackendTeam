@@ -29,4 +29,8 @@ public interface CustomerService {
 
 	CabDriver getDriverById(Long driverId);
 
+	Long fetchRates(String cabType);
+
+	String fetchCapcity(String cabType);
+
 }

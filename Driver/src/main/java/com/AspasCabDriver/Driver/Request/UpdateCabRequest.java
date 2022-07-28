@@ -8,15 +8,26 @@ public class UpdateCabRequest {
 	private String cabCapacity;
 	private String cabInsuranceNo;
 	private String cab_name;
+	private String driverEmail;
+	
+	
 	
 	public UpdateCabRequest(String licenseNo, String cabRegistrationNo, String cabType, String cabCapacity,
-			String cabInsuranceNo, String cab_name) {
+			String cabInsuranceNo, String cab_name, String driverEmail) {
+		super();
 		this.licenseNo = licenseNo;
 		this.cabRegistrationNo = cabRegistrationNo;
 		this.cabType = cabType;
 		this.cabCapacity = cabCapacity;
 		this.cabInsuranceNo = cabInsuranceNo;
 		this.cab_name = cab_name;
+		this.driverEmail = driverEmail;
+	}
+	public String getDriverEmail() {
+		return driverEmail;
+	}
+	public void setDriverEmail(String driverEmail) {
+		this.driverEmail = driverEmail;
 	}
 	public String getCab_name() {
 		return cab_name;
