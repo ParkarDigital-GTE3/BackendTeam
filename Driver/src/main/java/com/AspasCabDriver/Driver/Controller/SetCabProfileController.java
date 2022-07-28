@@ -87,7 +87,8 @@ public class SetCabProfileController {
 	@PostMapping("/getCabDetails")
 	public ResponseEntity<Object> getCabDetails(@RequestBody UpdateCabRequest getCabRequest)
 		{
-			CabDetails fetchCab = cabService.fetchCabByRegistrationNo(getCabRequest.getCabRegistrationNo());
+			CabDetails fetchCab = cabService.fetchCabByEmail(getCabRequest.getDriverEmail());
+			
 			if (fetchCab == null)
 			{
 				CustomResponse response = new CustomResponse(new Date(),"Cab Not Registered","409");
@@ -95,7 +96,7 @@ public class SetCabProfileController {
 			}
 			//CabDriver driver = authService.fetchDriverById(fetchCab.getDriver_id().getDriver_id());
 			CustomCabResponse response = new CustomCabResponse(new Date(), "Cab Found", "200",fetchCab);
-			return new ResponseEntity<Object>(fetchCab,HttpStatus.OK);
+			return new ResponseEntity<Object>(response,HttpStatus.OK);
 		}
 	
 	

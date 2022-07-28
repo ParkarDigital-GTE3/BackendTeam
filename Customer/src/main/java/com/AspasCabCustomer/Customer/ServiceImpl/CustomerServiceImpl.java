@@ -84,5 +84,17 @@ public class CustomerServiceImpl implements CustomerService{
 		return driverRepository.getDriverById(driverId);
 	}
 
+	@Override
+	public Long fetchRates(String cabType) {
+		
+		return carTypesAndRatesRepo.getRateByCabType(cabType);
+	}
+
+	@Override
+	public String fetchCapcity(String cabType) {
+		// TODO Auto-generated method stub
+		return carTypesAndRatesRepo.getCapcityByCabType(cabType);
+	}
+
 	
 }
