@@ -12,7 +12,9 @@ pool:
 steps:
 - task: Maven@3
   inputs:
-    mavenPomFile: 'pom.xml'
+    mavenPomFile: 'Admin/pom.xml'
+    mavenPomFile: 'Customer/pom.xml'
+    mavenPomFile: 'Driver/pom.xml'
     mavenOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '11'
